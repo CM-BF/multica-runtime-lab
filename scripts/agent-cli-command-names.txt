@@ -5,6 +5,7 @@ codearts
 codex
 copilot
 cursor-agent
+dcode
 deveco
 dim
 dsh

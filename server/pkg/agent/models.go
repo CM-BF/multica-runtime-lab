@@ -213,6 +213,13 @@ func ListModels(ctx context.Context, providerType string, runtimeCmd Command) (C
 		return cachedDiscovery(discoveryCacheKey(providerType, runtimeCmd), func() (Catalog, error) {
 			return discoverCopilotModels(ctx, runtimeCmd)
 		})
+	case "deepagents":
+		if err := validateDeepAgentsArgs(runtimeCmd.Prefix); err != nil {
+			return Catalog{}, err
+		}
+		return cachedDiscovery(discoveryCacheKey(providerType, runtimeCmd), func() (Catalog, error) {
+			return discovered(discoverACPModels(ctx, runtimeCmd, acpDiscoveryProvider{defaultBin: "dcode", clientName: "multica", tmpdirPrefix: "multica-deepagents-discovery-", isolatedStateEnv: "DEEPAGENTS_HOME", acpArgs: []string{"--acp"}, strictErrors: true}))
+		})
 	case "hermes":
 		return cachedDiscovery(discoveryCacheKey(providerType, runtimeCmd), func() (Catalog, error) {
 			return discovered(discoverHermesModels(ctx, runtimeCmd))

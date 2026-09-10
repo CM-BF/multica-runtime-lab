@@ -398,6 +398,8 @@ export function ProviderLogo({
       return <CodeArtsLogo className={className} />;
     case "openclaw":
       return <OpenClawLogo className={className} />;
+    case "deepagents":
+      return <Monitor aria-label="Deep Agents" className={className} />;
     case "hermes":
       return <HermesLogo className={className} />;
     case "pi":

@@ -115,6 +115,7 @@ export const RUNTIME_PROFILE_PROTOCOL_FAMILIES = [
   "codearts",
   "deveco",
   "openclaw",
+  "deepagents",
   "hermes",
   "pi",
   "cursor",

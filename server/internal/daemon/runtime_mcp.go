@@ -23,6 +23,10 @@ type runtimeLocalMcpServerSummary struct {
 	Enabled   bool   `json:"enabled"`
 }
 
+// Deep Agents deliberately has no global inventory/import path here: dcode merges
+// its own project/profile sources with the adapter-owned explicit MCP file.
+// Importing those sources again would duplicate tools and cross profile boundaries.
+//
 // mergeRuntimeAndAgentMcpConfig builds the task-local MCP configuration used
 // when an agent has MCP servers managed by Multica. Runtime servers are the
 // base layer and the agent's entries win on a same-name collision. The merge

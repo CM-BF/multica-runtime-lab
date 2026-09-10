@@ -6065,6 +6065,7 @@ func taskRootDirParams(workspacesRoot string, task Task) execenv.RootDirParams {
 // this map at init so their display names stay in lockstep with the
 // descriptor.
 var runtimeDisplayNameOverrides = map[string]string{
+	"deepagents": "Deep Agents",
 	"codearts":   "CodeArts",
 	"dsh":        "DeepSeek Harness",
 	"traecli":    "Trae",
@@ -8120,6 +8121,13 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 		agentCustomEnv = task.Agent.CustomEnv
 	}
 	layerCustomEnvAndHermesHome(agentEnv, agentCustomEnv, env.HermesHome, d.logger)
+	if provider == "deepagents" {
+		state, err := execenv.PrepareDeepAgentsHome(d.cfg.Profile, task.RuntimeID, task.AgentID, task.WorkspaceID, task.ID, taskCtx)
+		if err != nil {
+			return TaskResult{}, err
+		}
+		agentEnv["DEEPAGENTS_HOME"] = state
+	}
 	if provider == "reasonix" {
 		reasonixStateHome, err := prepareReasonixTaskStateHome(d.cfg.Profile, task.RuntimeID, task.AgentID)
 		if err != nil {
@@ -8705,6 +8713,10 @@ func shouldRetryWithFreshSession(result agent.Result, priorSessionID string, too
 	// Positive evidence: the backend proved the resume was refused.
 	if result.ResumeRejected || result.ResumeRejectedTransient {
 		return true
+	}
+	// Deep Agents only permits a fresh retry for an explicit missing load resource.
+	if provider == "deepagents" {
+		return false
 	}
 	// Positive evidence of a different kind: the resume was NOT refused —
 	// the transcript loaded fine — and the provider then refused to replay

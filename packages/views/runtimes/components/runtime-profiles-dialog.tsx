@@ -21,6 +21,7 @@ import type {
   RuntimeProtocolFamily,
 } from "@multica/core/types";
 import {
+  providerDisplayName,
   runtimeProfileListOptions,
   useCreateRuntimeProfile,
   useUpdateRuntimeProfile,
@@ -413,7 +414,7 @@ function CatalogRow({
 }) {
   const { t } = useT("runtimes");
   const label =
-    entry.kind === "custom" ? entry.profile.display_name : entry.protocolFamily;
+    entry.kind === "custom" ? entry.profile.display_name : providerDisplayName(entry.protocolFamily);
   const disabled = entry.kind === "custom" && !entry.profile.enabled;
   const isBuiltin = entry.kind === "builtin";
   return (
@@ -453,7 +454,7 @@ function CatalogRow({
         </span>
         {entry.kind === "custom" && (
           <span className="block truncate text-caption capitalize text-muted-foreground">
-            {entry.protocolFamily}
+            {providerDisplayName(entry.protocolFamily)}
           </span>
         )}
       </span>
@@ -512,7 +513,7 @@ function DetailPanel({
           </span>
           <div className="min-w-0">
             <h3 className="truncate text-title-sm font-semibold capitalize">
-              {entry.protocolFamily}
+              {providerDisplayName(entry.protocolFamily)}
             </h3>
             <span className="text-caption text-muted-foreground">
               {t(($) => $.profiles.builtin_detail.read_only)}
@@ -684,7 +685,7 @@ function ProfileFormView({
                 className="flex items-center gap-2 rounded-md border bg-background px-3 py-2.5 text-left text-body transition-colors hover:bg-accent/50 focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
               >
                 <ProviderLogo provider={option} className="h-4 w-4 shrink-0" />
-                <span className="truncate capitalize">{option}</span>
+                <span className="truncate capitalize">{providerDisplayName(option)}</span>
               </button>
             ))}
           </div>

@@ -352,6 +352,7 @@ var SupportedTypes = []string{
 	"codearts",
 	"deveco",
 	"openclaw",
+	"deepagents",
 	"hermes",
 	"pi",
 	"cursor",
@@ -442,6 +443,8 @@ func New(agentType string, cfg Config) (Backend, error) {
 		return &devecoBackend{cfg: cfg}, nil
 	case "openclaw":
 		return &openclawBackend{cfg: cfg}, nil
+	case "deepagents":
+		return &deepagentsBackend{cfg: cfg}, nil
 	case "hermes":
 		return &hermesBackend{cfg: cfg}, nil
 	case "pi":
@@ -504,6 +507,7 @@ var launchHeaders = map[string]string{
 	"cursor":      "cursor-agent (stream-json)",
 	"codearts":    "codearts run (json)",
 	"deveco":      "deveco run (json)",
+	"deepagents":  "dcode --acp",
 	"hermes":      "hermes acp",
 	"kimi":        "kimi acp",
 	"reasonix":    "reasonix acp",
