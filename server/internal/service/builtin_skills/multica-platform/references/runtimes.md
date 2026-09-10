@@ -139,11 +139,11 @@ checkout.
 
 ## Deep Agents (fork runtime)
 
-Use protocol family `deepagents` with an absolute `dcode` command from an isolated
-installation of `deepagents-code==0.1.68` and `deepagents-acp==0.0.11`. The adapter
+Use protocol family `deepagents` with an absolute `multica-dcode-acp` command from an isolated
+installation of `runtime-bridges/deepagents/` with its pinned dependencies. The adapter
 adds `--acp`; do not put it in fixed/custom arguments. Discovery also recognizes
 `MULTICA_DEEPAGENTS_PATH` and `MULTICA_DEEPAGENTS_MODEL`. Model identifiers may be
-entered manually if discovery has no credentials. Managed MCP currently accepts
-explicit stdio entries only. The daemon pins `DEEPAGENTS_HOME` to a private
+entered manually if discovery has no credentials. Managed MCP accepts explicit stdio and HTTP; the wrapper checks required servers
+in the same official loader and gates ACP startup on a matching READY receipt. The daemon pins `DEEPAGENTS_HOME` to a private
 conversation store; it does not copy global credentials or databases.
 See `docs/deepagents-runtime.md` for installation, limitations and validation.

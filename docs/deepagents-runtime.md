@@ -1,13 +1,14 @@
 # Deep Agents runtime (fork)
 
 This fork adds the `deepagents` protocol family. Multica owns task preparation,
-stream normalization and process cleanup; the official `dcode --acp` process owns
+stream normalization and process cleanup; the version-pinned `multica-dcode-acp`
+entry delegates to official dcode ACP, which owns
 its model loop, tools and subagents. The architecture report remains at
 `docs/superpowers/specs/2026-09-10-ah-13-da-1-deepagents-acp.md`.
 
 ## Install in a separate environment
 
-Python 3.12 or newer is required. The validated environment used Python 3.13.3,
+Python 3.13 or newer is required for the wrapper. The validated environment used Python 3.13.3,
 `deepagents-code==0.1.68`, `deepagents-acp==0.0.11`, ACP Python 0.12.1, and
 Deep Agents SDK 0.7.13. The resolved dependency snapshot is committed alongside
 `docs/verification/ah-13-da-2.md`.
@@ -16,7 +17,8 @@ Deep Agents SDK 0.7.13. The resolved dependency snapshot is committed alongside
 uv venv .venv-deepagents --python 3.13
 uv pip install --python .venv-deepagents/bin/python \
   -r docs/verification/ah-13-da-2-python-requirements.txt
-.venv-deepagents/bin/dcode --version
+uv pip install --python .venv-deepagents/bin/python --no-deps --no-build-isolation ./runtime-bridges/deepagents
+.venv-deepagents/bin/multica-dcode-acp --version
 ```
 
 Use the fork in its own environment. Do not run migrations against an existing
@@ -27,11 +29,11 @@ runtime family constraint; it has not been applied to any running database.
 ## Select and configure
 
 In the existing Runtimes management dialog, create a custom runtime with protocol
-family **Deep Agents**, using the absolute path to the venv's `dcode` as its
+family **Deep Agents**, using the absolute path to the venv's `multica-dcode-acp` as its
 command. A command path containing spaces must be quoted. Leave fixed arguments
 empty: the backend adds `--acp`, model and private MCP arguments.
 
-Alternatively an independently configured fork daemon discovers `dcode` on PATH
+Alternatively an independently configured fork daemon discovers `multica-dcode-acp` on PATH
 or through `MULTICA_DEEPAGENTS_PATH`; `MULTICA_DEEPAGENTS_MODEL` supplies its default
 model. Bind the runtime to an agent through the existing runtime selector.
 Executable discovery proves availability, not authentication.
@@ -58,12 +60,12 @@ private adapter config, installed dcode loader `tools/list`, and `tools/call`
 through the daemon handler in an isolated environment without model credentials.
 This loader test uses a test ACP harness, not a dcode model turn.
 
-Remote MCP brokers remain unsupported: their provider gate excludes Deep Agents,
-so their credential resolution, broker startup and provider-specific filtering
-contracts are not enabled. `TestDeepAgentsMCPConfigurationBoundary` exercises
-that rejection separately from plugin hook acceptance. Global user MCP import
-into the daemon inventory also remains unsupported. Explicit agent stdio and
-HTTP configuration is preserved. A prepared AGENTS/CLI brief is not MCP evidence.
+Remote MCP brokers now pass the Deep Agents provider gate and retain the existing
+credential resolution, approved-tool/schema checks, filtering and lifetime.
+User-managed entries default to required; remote entries follow FailurePolicy;
+plugin-hook overlays remain optional. Policy follows the winning final overlay.
+The daemon does not import global user MCP into its inventory. Full remote broker
+TLS startup E2E remains unverified; see the follow-up verification report.
 
 Each execution validates the object, writes it in a private directory (0700) as
 a 0600 file, and adds `--mcp-config`. New and loaded ACP sessions receive an empty
@@ -73,9 +75,29 @@ HTTP(S) URL without embedded credentials, and optional string-valued headers.
 SSE and mixed command/HTTP entries are rejected. The daemon does not import global Deep Agents MCP configuration into
 its inventory. dcode itself may merge project, profile or plugin configuration
 under its own trust rules; explicit config is not an isolation switch. No blanket
-project trust is added. A successful handshake does not prove every upstream MCP
-server connected: dcode can represent some discovery failures as server metadata.
-Inspect and test required tools before relying on a configured runtime.
+project trust is added.
+
+The required wrapper calls the official loader once with unchanged arguments,
+checks each required server's metadata and any approved original tool/schema
+requirements, then returns the same tools and manager. Optional failures produce
+a safe degradation status. Required/config failures clean up and prevent every
+ACP RPC. Disabled managed entries are omitted; required/disabled conflicts fail.
+No readiness tools/call or second loader is used.
+
+Go supplies private policy/request files and verifies an atomic receipt matching
+schema, nonce, config/policy digests, child PID and loader count. Both matching
+READY and successful ACP initialize are required before session/new/load/prompt.
+Old, absent, malformed or FAIL receipts never permit a prompt. Files disappear
+after process cleanup. Bare dcode cannot bypass this gate. Model discovery uses
+the same wrapper and readiness check; manual model input remains available when
+credentials are absent.
+
+Safe diagnostic categories include MCP_CONFIG_INVALID, MCP_REQUIRED_UNREADY,
+BRIDGE_VERSION, BRIDGE_READY_INVALID, BRIDGE_READY_MISSING and HANDSHAKE_TIMEOUT.
+The receipt reports only fixed categories and counts, not URL/header/env values.
+The wrapper depends on a pinned internal import seam; revalidate it before any
+upstream package upgrade. A successful no-credential import/version check is not
+a completed model turn.
 
 ## State, context and limits
 
@@ -142,3 +164,13 @@ go test -tags=agentintegration ./pkg/agent -run '^TestDeepAgentsReal' -count=1 -
 `RealSDKCheckpoint` uses the real ACP SDK with a deterministic graph in two
 processes, observing SQLite restoration, replay and a local artifact. It is not
 the prebuilt dcode model loop. See the verification report for PASS/BLOCKED scope.
+
+### History recovery
+
+Daemon preflight/poisoned-history failures obey the common fresh-session retry
+rule with an existing session and zero observed tools. A live session/load error
+sets ResumeLoadFailed and cannot enter that text-based path: only an exact
+missing-resource response sets ResumeRejected. Authentication, database and
+ambiguous session errors preserve the session. A poisoned-history error returned
+by session/prompt is safely normalized for the shared rule without copying raw
+provider error details.

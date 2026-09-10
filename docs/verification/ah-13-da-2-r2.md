@@ -1,5 +1,9 @@
 # AH-13 / DA-2 R2 — plugin hook streamable-HTTP
 
+Historical HTTP-only candidate. The same-round follow-up in
+`ah-13-da-2-r2-followup.md` adds production readiness and history recovery.
+The full-suite failure below remains a failure; it is not superseded by targeted PASS.
+
 PASS for the requested plugin hook transport and real loader/handler round trip.
 Overall DA-2 remains BLOCKED for credentialed dcode model E2E and the separately
 recorded required-MCP readiness/fail-closed gap; this is not full-stage acceptance.

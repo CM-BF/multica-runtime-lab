@@ -95,10 +95,12 @@ type ExecOptions struct {
 	// rest ignore it. Deliberately not enumerated here — the previous list
 	// went stale as backends were added, which is how MULTICA_QWENPAW_ARGS
 	// shipped plumbed but dropped. Grep for ExtraArgs to see today's set.
-	ExtraArgs        []string        // daemon-wide default CLI arguments appended before CustomArgs
-	CustomArgs       []string        // per-agent CLI arguments appended after ExtraArgs
-	QwenpawWorkspace string          // per-task QwenPaw workspace directory (passed as --workspace to qwenpaw acp); empty when not applicable
-	McpConfig        json.RawMessage // if non-nil, MCP server config to pass via --mcp-config
+	ExtraArgs         []string                              // daemon-wide default CLI arguments appended before CustomArgs
+	CustomArgs        []string                              // per-agent CLI arguments appended after ExtraArgs
+	QwenpawWorkspace  string                                // per-task QwenPaw workspace directory (passed as --workspace to qwenpaw acp); empty when not applicable
+	McpRequiredTools  map[string]map[string]json.RawMessage // required original tool names and reviewed schemas
+	McpServerRequired map[string]bool                       // nil defaults enabled managed servers to required; false preserves optional overlays
+	McpConfig         json.RawMessage                       // if non-nil, MCP server config to pass via --mcp-config
 	// ThinkingLevel is the runtime-native reasoning/effort value (e.g.
 	// Claude's "low|medium|high|xhigh|max", Codex's "none|minimal|low|
 	// medium|high|xhigh", OpenCode's model variant names). Empty means
@@ -269,6 +271,8 @@ type Result struct {
 	// shouldRetryWithFreshSession, where "was this run a resume?" is already
 	// known. Do not encode it here.
 	ResumeRejected bool
+	// ResumeLoadFailed identifies a live ACP load failure, not poisoned-history preflight.
+	ResumeLoadFailed bool
 	// ResumeRejectedTransient is positive evidence that this run's requested
 	// resume cannot proceed right now, but the session itself remains healthy.
 	// The daemon may use a fresh session for this turn, but must not retire the

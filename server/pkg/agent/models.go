@@ -218,7 +218,7 @@ func ListModels(ctx context.Context, providerType string, runtimeCmd Command) (C
 			return Catalog{}, err
 		}
 		return cachedDiscovery(discoveryCacheKey(providerType, runtimeCmd), func() (Catalog, error) {
-			return discovered(discoverACPModels(ctx, runtimeCmd, acpDiscoveryProvider{defaultBin: "dcode", clientName: "multica", tmpdirPrefix: "multica-deepagents-discovery-", isolatedStateEnv: "DEEPAGENTS_HOME", acpArgs: []string{"--acp"}, strictErrors: true}))
+			return discovered(discoverACPModels(ctx, runtimeCmd, acpDiscoveryProvider{defaultBin: "multica-dcode-acp", clientName: "multica", tmpdirPrefix: "multica-deepagents-discovery-", isolatedStateEnv: "DEEPAGENTS_HOME", acpArgs: []string{"--acp"}, strictErrors: true}))
 		})
 	case "hermes":
 		return cachedDiscovery(discoveryCacheKey(providerType, runtimeCmd), func() (Catalog, error) {
@@ -1950,6 +1950,16 @@ func discoverACPModels(ctx context.Context, runtimeCmd Command, p acpDiscoveryPr
 	if isolatedStateDir != "" {
 		childEnv = replaceEnvValue(childEnv, p.isolatedStateEnv, isolatedStateDir)
 	}
+	var deepGate *deepAgentsGate
+	if p.isolatedStateEnv == "DEEPAGENTS_HOME" {
+		gate, cleanup, err := prepareDeepAgentsGate("", nil)
+		if err != nil {
+			return fail("readiness setup", err)
+		}
+		defer cleanup()
+		deepGate = gate
+		childEnv = replaceEnvValue(childEnv, "MULTICA_DEEPAGENTS_REQUEST", gate.request)
+	}
 	cmd.Env = childEnv
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
@@ -1976,6 +1986,11 @@ func discoverACPModels(ctx context.Context, runtimeCmd Command, p acpDiscoveryPr
 		releaseProcessGroup(cmd)
 	}()
 
+	if deepGate != nil {
+		if _, err := deepGate.wait(runCtx, nil, cmd.Process.Pid); err != nil {
+			return fail("readiness", err)
+		}
+	}
 	scanner := bufio.NewScanner(stdout)
 	scanner.Buffer(make([]byte, 0, 1024*1024), 4*1024*1024)
 	nextID := 1

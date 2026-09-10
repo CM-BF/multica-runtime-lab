@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/multica-ai/multica/server/pkg/taskfailure"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -24,6 +25,20 @@ func deepAgentsFake(t *testing.T, mode string) (Backend, ExecOptions, string) {
 	script := filepath.Join(root, "fake dcode")
 	code := `#!` + python + `
 import sys,json,os,subprocess,time
+request=json.load(open(os.environ['MULTICA_DEEPAGENTS_REQUEST']))
+receipt={k:request[k] for k in ('schema','nonce','config_digest','policy_digest')}
+receipt.update(pid=os.getpid(),state='READY',loader_calls=1)
+ready_mode=os.environ['DA_MODE']
+if ready_mode=='old-ready':receipt['nonce']='old'
+if ready_mode=='wrong-ready':receipt['pid']=0
+if ready_mode=='version-ready':receipt['schema']='0'
+if ready_mode=='config-ready':receipt['config_digest']='wrong'
+if ready_mode=='policy-ready':receipt['policy_digest']='wrong'
+if ready_mode=='count-ready':receipt['loader_calls']=2
+if ready_mode=='fail-ready':receipt.update(state='FAIL',code='MCP_REQUIRED_UNREADY')
+if ready_mode!='no-ready':
+ with open(request['receipt']+'.tmp','w') as f:json.dump(receipt,f)
+ os.replace(request['receipt']+'.tmp',request['receipt'])
 mode=os.environ['DA_MODE']
 record=os.environ['DA_RECORD']
 with open(record+'.pid','w') as f:f.write(str(os.getpid()))
@@ -50,12 +65,14 @@ for line in sys.stdin:
    update('OLD REPLAY')
    if mode=='missing':
     send({'jsonrpc':'2.0','id':q['id'],'error':{'code':-32002,'message':'Resource not found','data':{'uri':'s1'}}});continue
-   if mode=='db':
-    send({'jsonrpc':'2.0','id':q['id'],'error':{'code':-32603,'message':'database unavailable'}});continue
-  result={'configOptions':[{'id':'model','category':'model','currentValue':'old'}]}
+   if mode in ('db','load-history'):
+    send({'jsonrpc':'2.0','id':q['id'],'error':{'code':-32603,'message':"the message at position 37 with role 'assistant' must not be empty SECRET_SENTINEL" if mode=='load-history' else 'database unavailable'}});continue
+  result={'configOptions':[{'id':'model','category':'model','currentValue':'old','type':'select','options':[{'value':'old','name':'Old model'}]}]}
   if method=='session/new' and mode!='no-id':result['sessionId']='s1'
  elif method=='session/prompt':
   prompt_id=q['id']
+  if mode=='prompt-history':
+   send({'jsonrpc':'2.0','id':q['id'],'error':{'code':-32603,'message':"the message at position 37 with role 'assistant' must not be empty SECRET_SENTINEL"}});continue
   if mode in ('cancel','stubborn'):
    child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(30)'])
    with open(record+'.child','w') as f:f.write(str(child.pid))
@@ -178,6 +195,9 @@ func TestDeepAgentsLoadAndReplay(t *testing.T) {
 			if strings.Contains(r.Output, "OLD") {
 				t.Fatal("replay leaked")
 			}
+			if r.ResumeLoadFailed != (mode == "missing" || mode == "db") {
+				t.Fatalf("live load stage: %+v", r)
+			}
 			if r.ResumeRejected != (mode == "missing") {
 				t.Fatalf("%+v", r)
 			}
@@ -297,7 +317,7 @@ func TestDeepAgentsFamilyWhitelist(t *testing.T) {
 		}
 		want := "deepagents"
 		if strings.HasSuffix(path, ".txt") {
-			want = "dcode"
+			want = "multica-dcode-acp"
 		}
 		if !strings.Contains(string(data), want) {
 			t.Fatal(path)
@@ -538,5 +558,109 @@ func TestDeepAgentsHTTPMCPPrivateConfig(t *testing.T) {
 				t.Fatal("invalid transport accepted")
 			}
 		})
+	}
+}
+
+func TestDeepAgentsReadinessGatesAllRPCs(t *testing.T) {
+	for _, mode := range []string{"old-ready", "wrong-ready", "version-ready", "config-ready", "policy-ready", "count-ready", "fail-ready", "no-ready"} {
+		t.Run(mode, func(t *testing.T) {
+			b, o, record := deepAgentsFake(t, mode)
+			o.HandshakeTimeout = 150 * time.Millisecond
+			s, err := b.Execute(context.Background(), "must not send", o)
+			if err != nil {
+				t.Fatal(err)
+			}
+			r := deepAgentsResult(t, s)
+			if r.Status == "completed" {
+				t.Fatal(r)
+			}
+			wire, _ := os.ReadFile(record)
+			if len(wire) != 0 {
+				t.Fatalf("RPC sent before matching READY: %s", wire)
+			}
+			t.Log(mode, r.Status, r.Error)
+		})
+	}
+}
+
+func TestDeepAgentsModelDiscoveryRequiresReady(t *testing.T) {
+	for _, mode := range []string{"ok", "old-ready"} {
+		t.Run(mode, func(t *testing.T) {
+			backend, _, record := deepAgentsFake(t, mode)
+			cfg := backend.(*deepagentsBackend).cfg
+			t.Setenv("DA_MODE", mode)
+			t.Setenv("DA_RECORD", record)
+			models, err := discoverACPModels(context.Background(), NewCommand(cfg.ExecutablePath, nil), acpDiscoveryProvider{defaultBin: "multica-dcode-acp", clientName: "multica", tmpdirPrefix: "deepagents-discovery-test-", isolatedStateEnv: "DEEPAGENTS_HOME", acpArgs: []string{"--acp"}, strictErrors: true, timeout: time.Second})
+			if mode == "ok" {
+				if err != nil || len(models) != 1 {
+					t.Fatalf("catalog=%+v err=%v", models, err)
+				}
+			} else {
+				if err == nil {
+					t.Fatal("old receipt accepted")
+				}
+				wire, _ := os.ReadFile(record)
+				if len(wire) != 0 {
+					t.Fatal("discovery sent RPC before readiness")
+				}
+			}
+		})
+	}
+}
+
+func TestDeepAgentsDisabledManagedPolicy(t *testing.T) {
+	raw := json.RawMessage(`{"mcpServers":{"disabled":{"disabled":true}}}`)
+	path, clean, err := prepareDeepAgentsMCP(raw)
+	defer clean()
+	if err != nil || path != "" {
+		t.Fatal("disabled managed config must be omitted", path, err)
+	}
+	b, o, _ := deepAgentsFake(t, "ok")
+	o.McpConfig = raw
+	o.McpServerRequired = map[string]bool{"disabled": true}
+	if _, err = b.Execute(context.Background(), "must not send", o); err == nil {
+		t.Fatal("required/disabled conflict accepted")
+	}
+}
+
+func TestDeepAgentsPoisonedHistoryStageAndRedaction(t *testing.T) {
+	for _, mode := range []string{"load-history", "prompt-history"} {
+		t.Run(mode, func(t *testing.T) {
+			b, o, _ := deepAgentsFake(t, mode)
+			o.ResumeSessionID = "s1"
+			session, err := b.Execute(context.Background(), "continue", o)
+			if err != nil {
+				t.Fatal(err)
+			}
+			r := deepAgentsResult(t, session)
+			if r.Status != "failed" || r.ResumeRejected || strings.Contains(r.Error, "SECRET_SENTINEL") {
+				t.Fatalf("%+v", r)
+			}
+			if r.ResumeLoadFailed != (mode == "load-history") || taskfailure.UnresumableHistory(r.Error) != (mode == "prompt-history") {
+				t.Fatalf("incorrect stage classification: %+v", r)
+			}
+		})
+	}
+}
+
+func TestDeepAgentsGatePrivateLifecycle(t *testing.T) {
+	gate, cleanup, err := prepareDeepAgentsGate("", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cleanup()
+	for _, path := range []string{gate.request, filepath.Join(filepath.Dir(gate.request), "policy.json")} {
+		info, err := os.Stat(path)
+		if err != nil || info.Mode().Perm() != 0600 {
+			t.Fatal(path, err)
+		}
+	}
+	info, err := os.Stat(filepath.Dir(gate.request))
+	if err != nil || info.Mode().Perm() != 0700 {
+		t.Fatal("directory mode", err)
+	}
+	cleanup()
+	if _, err = os.Stat(filepath.Dir(gate.request)); !os.IsNotExist(err) {
+		t.Fatal("gate directory retained", err)
 	}
 }

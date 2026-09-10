@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multica-dcode-acp"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = ["deepagents-code==0.1.68", "deepagents-acp==0.0.11", "agent-client-protocol==0.12.1"]
+
+[project.scripts]
+multica-dcode-acp = "multica_dcode_acp:main"

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/multica-ai/multica/server/pkg/taskfailure"
 	"io"
 	"net/url"
 	"os"
@@ -51,16 +52,23 @@ func prepareDeepAgentsMCP(raw json.RawMessage) (string, func(), error) {
 	if json.Unmarshal(raw, &config) != nil || config.Servers == nil {
 		return "", noop, errors.New("deepagents: expected mcpServers object")
 	}
-	for _, entry := range config.Servers {
+	changed := false
+	for name, entry := range config.Servers {
 		var s struct {
-			Command string            `json:"command"`
-			Type    string            `json:"type"`
-			URL     string            `json:"url"`
-			Args    []string          `json:"args"`
-			Env     map[string]string `json:"env"`
-			Headers map[string]string `json:"headers"`
+			Disabled bool              `json:"disabled"`
+			Command  string            `json:"command"`
+			Type     string            `json:"type"`
+			URL      string            `json:"url"`
+			Args     []string          `json:"args"`
+			Env      map[string]string `json:"env"`
+			Headers  map[string]string `json:"headers"`
 		}
 		invalid := json.Unmarshal(entry, &s) != nil
+		if !invalid && s.Disabled {
+			delete(config.Servers, name)
+			changed = true
+			continue
+		}
 		var fields map[string]json.RawMessage
 		_ = json.Unmarshal(entry, &fields)
 		switch s.Type {
@@ -82,6 +90,9 @@ func prepareDeepAgentsMCP(raw json.RawMessage) (string, func(), error) {
 	}
 	if len(config.Servers) == 0 {
 		return "", noop, nil
+	}
+	if changed {
+		raw, _ = json.Marshal(config)
 	}
 	dir, err := os.MkdirTemp("", "multica-deepagents-mcp-")
 	if err != nil {
@@ -116,10 +127,28 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 	if err = os.MkdirAll(state, 0700); err != nil {
 		return nil, err
 	}
+	var source struct {
+		Servers map[string]struct {
+			Disabled bool `json:"disabled"`
+		} `json:"mcpServers"`
+	}
+	_ = json.Unmarshal(opts.McpConfig, &source)
+	for name, entry := range source.Servers {
+		if entry.Disabled && opts.McpServerRequired[name] {
+			return nil, errors.New("deepagents: MCP_CONFIG_INVALID")
+		}
+	}
 	mcp, cleanMCP, err := prepareDeepAgentsMCP(opts.McpConfig)
 	if err != nil {
 		return nil, err
 	}
+	gate, cleanGate, err := prepareDeepAgentsGate(mcp, opts.McpServerRequired, opts.McpRequiredTools)
+	if err != nil {
+		cleanMCP()
+		return nil, err
+	}
+	originalCleanup := cleanMCP
+	cleanMCP = func() { cleanGate(); originalCleanup() }
 	args := append([]string{}, opts.ExtraArgs...)
 	args = append(args, opts.CustomArgs...)
 	args = append(args, "--acp")
@@ -131,7 +160,7 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 	}
 	path := b.cfg.ExecutablePath
 	if path == "" {
-		path = "dcode"
+		path = "multica-dcode-acp"
 	}
 	// The execution context controls RPCs, not pipes: cancellation must reach ACP
 	// before the independent, bounded process-tree cleanup kills the transport.
@@ -139,6 +168,7 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 	cmd := b.cfg.commandAt(path).exec(processCtx, args...)
 	cmd.Dir = cwd
 	cmd.Env = buildEnv(b.cfg.Env)
+	cmd.Env = append(cmd.Env, "MULTICA_DEEPAGENTS_REQUEST="+gate.request)
 	cmd.WaitDelay = 2 * time.Second
 	diagnostics := &deepAgentsDiagnostics{}
 	cmd.Stderr = diagnostics
@@ -275,6 +305,19 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 		}
 		setupCtx, stopSetup := context.WithTimeout(runCtx, handshake)
 		defer stopSetup()
+		degraded, readyErr := gate.wait(setupCtx, readerDone, cmd.Process.Pid)
+		if readyErr != nil {
+			fail("readiness", readyErr)
+			if setupCtx.Err() == nil {
+				r.Error = "deepagents: " + readyErr.Error()
+			} else if errors.Is(setupCtx.Err(), context.DeadlineExceeded) {
+				r.Error = "deepagents: HANDSHAKE_TIMEOUT"
+			}
+			return
+		}
+		if degraded > 0 {
+			c.onMessage(Message{Type: MessageStatus, Status: "MCP_OPTIONAL_DEGRADED"})
+		}
 		init, e := request(setupCtx, "initialize", map[string]any{"protocolVersion": 1, "clientCapabilities": map[string]any{}, "clientInfo": map[string]string{"name": "multica", "version": "1"}})
 		if e != nil {
 			fail("initialize", e)
@@ -303,6 +346,7 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 		session, e := request(setupCtx, method, params)
 		if e != nil {
 			fail(method, e)
+			r.ResumeLoadFailed = method == "session/load"
 			r.ResumeRejected = deepAgentsMissingSession(e, opts.ResumeSessionID)
 			return
 		}
@@ -397,6 +441,9 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 		}
 		if reply.err != nil {
 			fail("session/prompt", reply.err)
+			if r.Status == "failed" && taskfailure.UnresumableHistory(reply.err.Error()) {
+				r.Error = "deepagents: history message with role 'assistant' must not be empty"
+			}
 			return
 		}
 		var end struct {

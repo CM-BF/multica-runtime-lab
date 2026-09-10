@@ -192,7 +192,7 @@ var probeAgentCLIs = func() map[string]AgentEntry {
 	if e, ok := probe("MULTICA_OPENCLAW_PATH", "openclaw", "MULTICA_OPENCLAW_MODEL"); ok {
 		agents["openclaw"] = e
 	}
-	if e, ok := probe("MULTICA_DEEPAGENTS_PATH", "dcode", "MULTICA_DEEPAGENTS_MODEL"); ok {
+	if e, ok := probe("MULTICA_DEEPAGENTS_PATH", "multica-dcode-acp", "MULTICA_DEEPAGENTS_MODEL"); ok {
 		agents["deepagents"] = e
 	}
 	if e, ok := probe("MULTICA_HERMES_PATH", "hermes", "MULTICA_HERMES_MODEL"); ok {

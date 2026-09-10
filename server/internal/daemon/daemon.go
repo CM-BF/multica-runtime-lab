@@ -8275,6 +8275,8 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 		ExtraArgs:              extraArgs,
 		CustomArgs:             customArgs,
 		McpConfig:              mcpConfig,
+		McpServerRequired:      deepAgentsMCPPolicy(provider, mcpConfig, remoteMCPConfig, pluginHookConfig, task.RemoteMCPConnections),
+		McpRequiredTools:       deepAgentsRequiredTools(provider, mcpConfig, remoteMCPConfig, pluginHookConfig, task.RemoteMCPConnections),
 		ThinkingLevel:          thinkingLevel,
 		ServiceTier:            serviceTier,
 		OpenclawMode:           openclawMode,
@@ -8714,8 +8716,8 @@ func shouldRetryWithFreshSession(result agent.Result, priorSessionID string, too
 	if result.ResumeRejected || result.ResumeRejectedTransient {
 		return true
 	}
-	// Deep Agents only permits a fresh retry for an explicit missing load resource.
-	if provider == "deepagents" {
+	// Live ACP load errors must not be reclassified by provider error text.
+	if provider == "deepagents" && result.ResumeLoadFailed {
 		return false
 	}
 	// Positive evidence of a different kind: the resume was NOT refused —
@@ -8739,6 +8741,10 @@ func shouldRetryWithFreshSession(result agent.Result, priorSessionID string, too
 	// rather than by an in-turn retry.
 	if taskfailure.UnresumableHistory(result.Error) {
 		return true
+	}
+	// Preflight poisoned history above is shared; other Deep Agents errors are not.
+	if provider == "deepagents" {
+		return false
 	}
 	// Third form of positive evidence, and the same shape of argument: the
 	// resume was not refused — the runtime happily rebuilt the session — but

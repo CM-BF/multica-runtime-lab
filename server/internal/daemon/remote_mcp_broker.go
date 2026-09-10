@@ -158,7 +158,7 @@ func startTaskRemoteMCPBrokers(setupCtx, lifetimeCtx context.Context, taskID, pr
 
 func providerSupportsRemoteMCPBroker(provider string) bool {
 	switch provider {
-	case "codex", "claude", "hermes", "qoder", "mcode":
+	case "codex", "claude", "hermes", "qoder", "mcode", "deepagents":
 		return true
 	default:
 		return false
