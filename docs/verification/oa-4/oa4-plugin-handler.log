@@ -1,0 +1,7 @@
+=== RUN   TestOpenAISandboxPluginHandlerRebinding
+    openai_sandbox_mcp_integration_test.go:126: Two distinct real daemon handlers + official SDK HTTP list/call + Unix checkpoint continuation passed; changed tools rejected before driver, zero calls
+--- PASS: TestOpenAISandboxPluginHandlerRebinding (2.79s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon	3.083s
+
+EXIT_CODE=0

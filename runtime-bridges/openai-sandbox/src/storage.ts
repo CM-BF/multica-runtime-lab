@@ -3,6 +3,7 @@ import path from 'node:path';
 import {createHash,randomBytes} from 'node:crypto';
 import {constants} from 'node:fs';
 import {BridgeError,SDK_VERSION,type Request} from './protocol.js';
+import {canonical,stableMCP} from './mcp-identity.js';
 export const LIMIT=16*1024*1024;
 export const digest=(data:string|Uint8Array)=>createHash('sha256').update(data).digest('hex');
 export function relative(value:string):string {
@@ -31,13 +32,13 @@ export async function inventory(root:string,paths:string[]):Promise<Record<strin
   return result;
 }
 export class Store {
-  token:string;root:string;generation?:string;previous:Record<string,string>={};identity:string;
+  token:string;root:string;generation?:string;previous:Record<string,string>={};identity:string;expectedMCPTools?:string;
   private lock?:fs.FileHandle;
   constructor(public request:Request) {
     this.token=request.sessionId||randomBytes(16).toString('hex');
     if(!/^[a-f0-9]{32}$/.test(this.token))throw new BridgeError('INVALID_SESSION');
     this.root=path.join(request.stateRoot,this.token);
-    this.identity=digest(JSON.stringify({sdk:SDK_VERSION,cwd:request.cwd,model:request.model,mcp:request.mcp,inputs:request.inputs,artifacts:request.artifacts}));
+    this.identity=digest(canonical({schema:2,sdk:SDK_VERSION,cwd:request.cwd,model:request.model,mcp:stableMCP(request),inputs:request.inputs,artifacts:request.artifacts}));
   }
   async open() {
     if(!path.isAbsolute(this.request.stateRoot)||!path.isAbsolute(this.request.cwd))throw new BridgeError('UNSAFE_PATH');
@@ -56,23 +57,23 @@ export class Store {
       const metadataRaw=await readBounded(path.join(gen,'checkpoint.json'));
       if(digest(metadataRaw)!==pointer.sha256)throw new Error();
       const metadata=JSON.parse(metadataRaw.toString());
-      if(metadata.identity!==this.identity || metadata.sdk!==SDK_VERSION)throw new Error();
+      if(metadata.schema!==2 || typeof metadata.mcpTools!=='string' || metadata.identity!==this.identity || metadata.sdk!==SDK_VERSION)throw new Error();
       const files:Record<string,Buffer>={};
       for(const name of ['history.json','run-state.json','sandbox-state.json','workspace.tar']) {
         files[name]=await readBounded(path.join(gen,name),64*1024*1024);
         if(digest(files[name])!==metadata.hashes[name])throw new Error();
       }
-      this.previous=metadata.artifacts;this.generation=pointer.generation;
+      this.expectedMCPTools=metadata.mcpTools;this.previous=metadata.artifacts;this.generation=pointer.generation;
       return {history:JSON.parse(files['history.json'].toString()),archive:files['workspace.tar']};
     } catch {throw new BridgeError('CHECKPOINT_INVALID');}
   }
   async begin() {await atomic(path.join(this.root,'in_flight'),JSON.stringify({requestId:this.request.requestId}));}
-  async checkpoint(data:{history:any[];runState:string;sandboxState:unknown;archive:Uint8Array;artifacts:Record<string,string>}, beforeCommit:()=>Promise<void> = async()=>{}) {
+  async checkpoint(data:{history:any[];runState:string;sandboxState:unknown;archive:Uint8Array;artifacts:Record<string,string>;mcpTools:string}, beforeCommit:()=>Promise<void> = async()=>{}) {
     const generation=randomBytes(16).toString('hex'),dir=path.join(this.root,generation);await privateDir(dir);
     const files:Record<string,string|Uint8Array>={'history.json':JSON.stringify(data.history),'run-state.json':data.runState,'sandbox-state.json':JSON.stringify(data.sandboxState),'workspace.tar':data.archive};
     const hashes:Record<string,string>={};
     for(const [name,body] of Object.entries(files)){hashes[name]=digest(body);await atomic(path.join(dir,name),body);}
-    const meta=JSON.stringify({schema:1,sdk:SDK_VERSION,identity:this.identity,hashes,artifacts:data.artifacts});
+    const meta=JSON.stringify({schema:2,sdk:SDK_VERSION,identity:this.identity,mcpTools:data.mcpTools,hashes,artifacts:data.artifacts});
     await atomic(path.join(dir,'checkpoint.json'),meta);
     await beforeCommit();
     await atomic(path.join(this.root,'current.json'),JSON.stringify({generation,sha256:digest(meta)}));
@@ -85,6 +86,19 @@ export async function exportArtifacts(workspace:string,cwd:string,paths:string[]
   const output=await inventory(workspace,paths),current=await inventory(cwd,paths);
   if(JSON.stringify(Object.entries(current).sort())!==JSON.stringify(Object.entries(baseline).sort()))throw new BridgeError('ARTIFACT_CONFLICT');
   const changes:{path:string;kind:string;sha256?:string;bytes?:number}[]=[];
+  // Reject both file/directory transitions, including empty directories, before
+  // any otherwise unrelated artifact can be exported.
+  const kinds=async(root:string)=>{
+    const result=new Map<string,string>();
+    const visit=async(rel:string):Promise<void>=>{
+      const p=await inside(root,rel);let stat;try{stat=await fs.lstat(p);}catch(e:any){if(e.code==='ENOENT')return;throw e;}
+      result.set(rel,stat.isDirectory()?'directory':'file');
+      if(stat.isDirectory())for(const name of await fs.readdir(p))await visit(rel+'/'+name);
+    };
+    for(const rel of paths)await visit(rel);return result;
+  };
+  const sourceKinds=await kinds(workspace),targetKinds=await kinds(cwd);
+  for(const [rel,kind] of sourceKinds)if(targetKinds.has(rel)&&targetKinds.get(rel)!==kind)throw new BridgeError('ARTIFACT_TYPE_CHANGE');
   // Validate every destination before performing the first write.
   for(const rel of new Set([...Object.keys(output),...Object.keys(baseline)]))await inside(cwd,rel);
   for(const [rel,hash] of Object.entries(output)) {

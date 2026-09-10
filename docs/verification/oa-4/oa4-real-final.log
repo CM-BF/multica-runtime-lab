@@ -1,0 +1,14 @@
+=== RUN   TestOpenAISandboxRealEntryNoCredentials
+    openai_sandbox_integration_test.go:58: real SDK entry: status=failed error=openai-sandbox: MODEL_CREDENTIALS
+--- PASS: TestOpenAISandboxRealEntryNoCredentials (0.23s)
+=== RUN   TestOpenAISandboxRealSDKDescendantCancellation
+--- PASS: TestOpenAISandboxRealSDKDescendantCancellation (0.28s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/agent	0.687s
+=== RUN   TestOpenAISandboxPluginHandlerRebinding
+    openai_sandbox_mcp_integration_test.go:139: Two distinct real daemon handlers + official SDK HTTP list/call + Unix checkpoint continuation passed; changed tools rejected before driver, zero calls
+--- PASS: TestOpenAISandboxPluginHandlerRebinding (2.97s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon	3.244s
+
+EXIT_CODE=0

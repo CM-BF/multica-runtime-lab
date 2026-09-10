@@ -1,0 +1,23 @@
+npm notice
+npm notice package: multica-openai-sandbox@0.1.0
+npm notice Tarball Contents
+npm notice 1.1kB README.md
+npm notice 2.2kB dist/cli.js
+npm notice 8.1kB dist/engine.js
+npm notice 2.0kB dist/mcp-identity.js
+npm notice 1.8kB dist/protocol.js
+npm notice 9.2kB dist/storage.js
+npm notice 534B package.json
+npm notice Tarball Details
+npm notice name: multica-openai-sandbox
+npm notice version: 0.1.0
+npm notice filename: multica-openai-sandbox-0.1.0.tgz
+npm notice package size: 7.9 kB
+npm notice unpacked size: 24.9 kB
+npm notice shasum: f7436fb7f719ea9c28d8adaaebbc9da5bb3ddbe6
+npm notice integrity: sha512-yRsw8BJI4JGtU[...]sPYU1fOSabx1g==
+npm notice total files: 7
+npm notice
+multica-openai-sandbox-0.1.0.tgz
+
+EXIT_CODE=0

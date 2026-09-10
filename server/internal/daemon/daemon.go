@@ -7502,6 +7502,12 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	if pluginHookServer != nil {
 		defer pluginHookServer.Close()
 	}
+	if provider == "openai-sandbox" {
+		pluginHookConfig, pluginHookErr = bindOpenAISandboxPluginMCP(pluginHookConfig, task.PluginHookTools)
+		if pluginHookErr != nil {
+			return TaskResult{}, fmt.Errorf("bind OpenAI Sandbox plugin MCP: %w", pluginHookErr)
+		}
+	}
 	if len(pluginHookConfig) > 0 {
 		merged, mergeErr := mergeTaskRemoteMCPConfig(remoteMCPConfig, pluginHookConfig)
 		if mergeErr != nil {

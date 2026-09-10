@@ -5,7 +5,7 @@ export type Request = {
   cwd: string; stateRoot: string; sessionId?: string; maxTurns?: number;
   inputs: string[]; artifacts: string[]; mcp?: {mcpServers: Record<string, MCPEntry>};
 };
-export type MCPEntry = {type?: string; command?: string; args?: string[]; env?: Record<string,string>; url?: string; headers?: Record<string,string>};
+export type MCPEntry = {disabled?: boolean; multicaBinding?: {kind:string;tools:unknown[]}; type?: string; command?: string; args?: string[]; env?: Record<string,string>; url?: string; headers?: Record<string,string>};
 export type Frame = Record<string, unknown>;
 export type Send = (frame: Frame) => Promise<void>;
 export class BridgeError extends Error { constructor(public code: string) {super(code);} }

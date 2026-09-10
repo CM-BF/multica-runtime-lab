@@ -4,18 +4,22 @@ import {Runner,OpenAIProvider,MCPServerStdio,MCPServerStreamableHttp,type MCPSer
 import {Manifest,SandboxAgent,file,shell} from '@openai/agents/sandbox';
 import {UnixLocalSandboxClient} from '@openai/agents/sandbox/local';
 import {BridgeError,mapEvent,safeError,type Request,type Send} from './protocol.js';
-import {Store,inventory,inside,readBounded,privateDir,exportArtifacts,atomic} from './storage.js';
-export async function connectMCP(request:Request):Promise<MCPServer[]> {
+import {canonical,stableMCP} from './mcp-identity.js';
+import {Store,digest,inventory,inside,readBounded,privateDir,exportArtifacts,atomic} from './storage.js';
+export async function connectMCP(request:Request,observed?:Record<string,unknown>):Promise<MCPServer[]> {
+  stableMCP(request); // Validate all entries before starting the first client.
   const servers:MCPServer[]=[];
   try {
     for(const [name,cfg] of Object.entries(request.mcp?.mcpServers??{})) {
+      if(cfg.disabled)continue;
       let server:MCPServer;
       if((!cfg.type || cfg.type==='stdio') && cfg.command && !cfg.url) server=new MCPServerStdio({name,command:cfg.command,args:cfg.args??[],env:cfg.env,cwd:request.cwd,clientSessionTimeoutSeconds:10});
       else if(cfg.type==='http' && cfg.url && !cfg.command) {
         const url=new URL(cfg.url);if(!['http:','https:'].includes(url.protocol)||url.username||url.password)throw new BridgeError('MCP_CONFIG');
         server=new MCPServerStreamableHttp({name,url:cfg.url,requestInit:{headers:cfg.headers??{}},clientSessionTimeoutSeconds:10});
       } else throw new BridgeError('MCP_CONFIG');
-      servers.push(server);await server.connect();await server.listTools();
+      servers.push(server);await server.connect();const tools=await server.listTools();
+      if(observed)observed[name]=tools.map(t=>t).sort((a,b)=>a.name.localeCompare(b.name));
     }
     return servers;
   } catch {
@@ -56,7 +60,10 @@ export async function execute(request:Request,send:Send,signal:AbortSignal,drive
     session=await client.create({manifest});
     if(restored.archive) {await session.hydrateWorkspace(restored.archive);for(const name of Object.keys(inputs))await session.materializeEntry({path:name,entry:entries[name]});}
     if(signal.aborted)throw new BridgeError('CANCELLED');
-    servers=await connectMCP(request);
+    const observed:Record<string,unknown>={};
+    servers=await connectMCP(request,observed);
+    const mcpTools=digest(canonical(observed));
+    if(store.expectedMCPTools!==undefined && store.expectedMCPTools!==mcpTools)throw new BridgeError('MCP_POLICY_CHANGED');
     const agent=new SandboxAgent({name:'Multica local sandbox',model:request.model,instructions:request.instructions,defaultManifest:manifest,capabilities:[shell()],mcpServers:servers});
     const input=[...restored.history,{role:'user' as const,content:request.prompt}];
     const stream=await (driver??((a,i,o)=>runner.run(a,i,o)))(agent,input,{stream:true,signal,maxTurns:request.maxTurns||20,sandbox:{client,session}});
@@ -72,7 +79,7 @@ export async function execute(request:Request,send:Send,signal:AbortSignal,drive
     const serialized=JSON.stringify({history:stream.history,runState,sandboxState});
     if(secrets.some(secret=>serialized.includes(secret)))throw new BridgeError('STATE_SECRET');
     const artifacts=await exportArtifacts(session.state.workspaceRootPath,request.cwd,request.artifacts,baseline);
-    await store.checkpoint({history:stream.history,runState,sandboxState,archive,artifacts:artifacts.hashes},cleanup);
+    await store.checkpoint({history:stream.history,runState,sandboxState,archive,artifacts:artifacts.hashes,mcpTools},cleanup);
     result={type:'result',status:'completed',output:String(stream.finalOutput??''),sessionId:store.token,artifacts:artifacts.changes};
   } catch(error) {
     const code=signal.aborted?'CANCELLED':safeError(error);

@@ -1,8 +1,8 @@
 # OpenAI Sandbox runtime
 
-Status: OA-2 candidate, awaiting independent QA. Model E2E is blocked without
-explicit model credentials. See `docs/verification/ah-13-oa-2.md` for the exact
-checks and outstanding snapshot test verification.
+Status: OA-4 / OA-2-R1 candidate, awaiting independent review. The complete
+bridge suite and two-turn daemon plugin handler integration pass; model E2E is
+blocked without explicit credentials. See `docs/verification/ah-13-oa-4.md`.
 
 The `openai-sandbox` family runs this fork's `multica-openai-sandbox` entry. It
 wraps official `@openai/agents` **0.17.2**, `Runner.run`, `SandboxAgent` and
@@ -77,15 +77,31 @@ Skills and arbitrary checkout files are not automatically imported.
 The SDK owns shell tool execution. Explicit `ExecOptions.McpConfig.mcpServers`
 stdio (`command`, `args`, `env`) and HTTP (`type:"http"`, `url`, `headers`) map to
 official SDK MCP servers. Each must connect and list tools before Runner.run;
-all explicit servers are required. No platform/user account MCP configuration is
-imported. Remote broker provider gating has **not** been enabled for this family;
-platform plugin HTTP and full remote broker end-to-end acceptance remain unproven.
-A real local stdio handler list/call round trip is covered by tests.
+enabled explicit servers are required. `disabled:true` entries are skipped before
+client construction; non-boolean disabled flags fail before any client starts.
+No account MCP configuration is imported. Remote broker provider gating has
+**not** been enabled. Real local stdio and two successive daemon plugin HTTP
+handler list/call round trips are tested without a model; full remote broker and
+credentialed model end-to-end acceptance remain unproven.
+
+For OA only, the daemon attaches stable plugin installation ID, hook key, tool
+name/description/schema policy to `multica-plugins`. A bound HTTP endpoint must
+remain `http://127.0.0.1:<port>/<48-hex-token>` without query/fragment/userinfo.
+Only that transport's port/path token may rotate; arbitrary URL changes remain
+bound. HTTP Authorization credential values can rotate within the same scheme;
+other headers, stdio command/args/env and unknown policy fields remain bound.
+Before each Runner call the newly connected servers' complete tools/list result
+is fingerprinted and compared to the previous checkpoint. Stable policy changes
+fail CHECKPOINT_INVALID; changed advertised tools fail MCP_POLICY_CHANGED before
+any model/tool execution. Only current request transports/credentials are used;
+old connections are never restored from SDK RunState.
 
 On a successful turn, selected artifact files are copied back with hashes and
 create/modify/delete metadata in the bridge result. Go consumers see the files in
 the task cwd and existing task artifact handling. Concurrent host edits cause
-ARTIFACT_CONFLICT before export. Multi-file export is not a filesystem transaction;
+ARTIFACT_CONFLICT before export. File/directory type replacement (including empty
+directories) is unsupported and fails ARTIFACT_TYPE_CHANGE before **any** export
+write, including unrelated files. Multi-file export is not a filesystem transaction;
 a crash mid-export leaves the session dirty and requires manual reconciliation.
 
 Text/tool events use a bounded, cancelable delivery path. A consumer stalled for
@@ -101,8 +117,9 @@ Multica's session ID is an opaque 32-hex token, never an SDK RunState or a host
 path. An immutable generation stores separate history, SDK RunState JSON,
 serialized sandbox state and SDK workspace archive bytes (the file is named `workspace.tar`; the SDK bytes are actually its JSON
 archive format).
-A hashed manifest binds the generation to SDK, model, cwd, explicit MCP and path
-selection. All persisted files are private. Snapshot storage uses explicit SDK
+Checkpoint schema 2 binds the generation to SDK, model, cwd, stable MCP policy,
+observed tool definitions and path selection. Pre-OA-4 schema 1 checkpoints are
+rejected; no automatic upgrade or weakened identity matching is performed. All persisted files are private. Snapshot storage uses explicit SDK
 `noop` plus `persistWorkspace`/`hydrateWorkspace`; it never selects the SDK's
 ambient default snapshot directory.
 

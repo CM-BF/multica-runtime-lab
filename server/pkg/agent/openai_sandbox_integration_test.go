@@ -31,9 +31,13 @@ func realOpenAISandbox(t *testing.T, cancellation bool) (Backend, ExecOptions) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	entry := filepath.Join(root, "runtime-bridges/openai-sandbox/dist/cli.js")
+	bridge := os.Getenv("MULTICA_OPENAI_SANDBOX_TEST_BRIDGE")
+	if bridge == "" {
+		bridge = filepath.Join(root, "runtime-bridges/openai-sandbox")
+	}
+	entry := filepath.Join(bridge, "dist/cli.js")
 	if cancellation {
-		entry = filepath.Join(root, "runtime-bridges/openai-sandbox/test/cancel-entry.mjs")
+		entry = filepath.Join(bridge, "test/cancel-entry.mjs")
 	}
 	home := t.TempDir()
 	b, err := New("openai-sandbox", Config{ExecutablePath: node, LaunchPrefix: []string{entry}, Env: map[string]string{"OPENAI_SANDBOX_STATE": filepath.Join(home, "state")}})

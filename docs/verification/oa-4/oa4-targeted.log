@@ -1,0 +1,15 @@
+✔ disabled stdio and HTTP cause zero child starts and zero connections (6.29725ms)
+✔ stable binding permits only bounded transport/credential rotation; substantive policy remains bound (9.023875ms)
+✔ artifact file-to-directory rejects before unrelated export writes (6.548041ms)
+✔ artifact directory-to-file rejects before unrelated export writes (3.426333ms)
+✔ artifact empty-directory-to-file rejects before unrelated export writes (2.593625ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 224.905083
+
+EXIT_CODE=0

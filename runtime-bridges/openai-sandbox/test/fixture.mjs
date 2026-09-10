@@ -1,5 +1,6 @@
 // Test-only driver: real SDK Unix sandbox and RunState, simulated model stream.
 import fs from 'node:fs/promises';
+import {pathToFileURL} from 'node:url';
 import {RunState,RunContext} from '@openai/agents';
 import {execute} from '../dist/engine.js';
 export async function driver(agent,input,options) {
@@ -12,7 +13,7 @@ export async function driver(agent,input,options) {
   const text=resume?'second':'first';
   return {async *[Symbol.asyncIterator](){yield {type:'raw_model_stream_event',data:{type:'output_text_delta',delta:text}};yield {type:'run_item_stream_event',name:'tool_called',item:{rawItem:{callId:'shell-1',name:'shell'}}};yield {type:'run_item_stream_event',name:'tool_output',item:{rawItem:{callId:'shell-1'},output:'exit 0'}};},completed:Promise.resolve(),history:[...input,{type:'message',role:'assistant',status:'completed',content:[{type:'output_text',text}]} ],state:new RunState(new RunContext({}),input,agent,20),finalOutput:text};
 }
-if(process.argv[2]) {
+if(process.argv[2] && pathToFileURL(process.argv[1]).href===import.meta.url) {
   const request=JSON.parse(await fs.readFile(process.argv[2],'utf8'));
   await execute(request,async f=>process.stdout.write(JSON.stringify(f)+'\n'),new AbortController().signal,driver);
 }
