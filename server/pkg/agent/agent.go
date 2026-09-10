@@ -356,6 +356,7 @@ var SupportedTypes = []string{
 	"codearts",
 	"deveco",
 	"openclaw",
+	"openai-sandbox",
 	"deepagents",
 	"hermes",
 	"pi",
@@ -447,6 +448,8 @@ func New(agentType string, cfg Config) (Backend, error) {
 		return &devecoBackend{cfg: cfg}, nil
 	case "openclaw":
 		return &openclawBackend{cfg: cfg}, nil
+	case "openai-sandbox":
+		return &openAISandboxBackend{cfg: cfg}, nil
 	case "deepagents":
 		return &deepagentsBackend{cfg: cfg}, nil
 	case "hermes":
@@ -503,32 +506,33 @@ func DetectVersion(ctx context.Context, cmd Command) (string, error) {
 // environment variables are deliberately omitted so the string is a hint
 // about *what* users are extending, not a dump of the full command line.
 var launchHeaders = map[string]string{
-	"antigravity": "agy -p (non-interactive)",
-	"claude":      "claude (stream-json)",
-	"codebuddy":   "codebuddy (stream-json)",
-	"codex":       "codex app-server",
-	"copilot":     "copilot (json)",
-	"cursor":      "cursor-agent (stream-json)",
-	"codearts":    "codearts run (json)",
-	"deveco":      "deveco run (json)",
-	"deepagents":  "dcode --acp",
-	"hermes":      "hermes acp",
-	"kimi":        "kimi acp",
-	"reasonix":    "reasonix acp",
-	"dsh":         "dsh --profile multica (stdio)",
-	"kiro":        "kiro-cli acp",
-	"openclaw":    "openclaw agent (json)",
-	"opencode":    "opencode run (json)",
-	"pi":          "pi (json mode)",
-	"qoder":       "qodercli --acp",
-	"qoderclicn":  "qoderclicn --acp",
-	"traecli":     "traecli acp serve",
-	"grok":        "grok agent stdio",
-	"qwen":        "qwen -p (stream-json)",
-	"qwenpaw":     "qwenpaw acp",
-	"dim":         "dim acp",
-	"mcode":       "mcode acp",
-	"zeroclaw":    "zeroclaw acp",
+	"antigravity":    "agy -p (non-interactive)",
+	"claude":         "claude (stream-json)",
+	"codebuddy":      "codebuddy (stream-json)",
+	"codex":          "codex app-server",
+	"copilot":        "copilot (json)",
+	"cursor":         "cursor-agent (stream-json)",
+	"codearts":       "codearts run (json)",
+	"deveco":         "deveco run (json)",
+	"openai-sandbox": "multica-openai-sandbox",
+	"deepagents":     "dcode --acp",
+	"hermes":         "hermes acp",
+	"kimi":           "kimi acp",
+	"reasonix":       "reasonix acp",
+	"dsh":            "dsh --profile multica (stdio)",
+	"kiro":           "kiro-cli acp",
+	"openclaw":       "openclaw agent (json)",
+	"opencode":       "opencode run (json)",
+	"pi":             "pi (json mode)",
+	"qoder":          "qodercli --acp",
+	"qoderclicn":     "qoderclicn --acp",
+	"traecli":        "traecli acp serve",
+	"grok":           "grok agent stdio",
+	"qwen":           "qwen -p (stream-json)",
+	"qwenpaw":        "qwenpaw acp",
+	"dim":            "dim acp",
+	"mcode":          "mcode acp",
+	"zeroclaw":       "zeroclaw acp",
 }
 
 // LaunchHeader returns the user-visible launch skeleton for agentType, or an

@@ -1,0 +1,47 @@
+
+> multica-openai-sandbox@0.1.0 test
+> node --test test/*.test.mjs
+
+✖ real Unix sandbox: cross-process archive recovery and artifact create/modify/delete; simulated model (2415.927ms)
+✔ real SDK explicit MCP stdio list/call round trip (71.320084ms)
+Error initializing MCP server: object
+✔ required MCP failure prevents driver/model and cleans real workspace (5.925292ms)
+✔ real Unix cancellation stops shell child and retains dirty recovery (60021.986708ms)
+✔ artifact conflict and unsafe paths reject before overwrite (4.367542ms)
+✔ events retain call identity and errors never echo raw credentials (0.514375ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 62717.201916
+
+✖ failing tests:
+
+test at test/bridge.test.mjs:16:1
+✖ real Unix sandbox: cross-process archive recovery and artifact create/modify/delete; simulated model (2415.927ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  + actual - expected
+  
+  + 'failed'
+  - 'completed'
+  
+      at TestContext.<anonymous> (file:///Users/citrine/Projects/multica-runtime-lab/runtime-bridges/openai-sandbox/test/bridge.test.mjs:18:114)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'completed',
+    operator: 'strictEqual'
+  }
+npm notice
+npm notice New major version of npm available! 10.9.2 -> 12.0.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+npm notice To update run: npm install -g npm@12.0.2
+npm notice
+
+EXIT_CODE=1

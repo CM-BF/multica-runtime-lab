@@ -1,0 +1,27 @@
+{
+  "name": "multica-openai-sandbox",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "multica-openai-sandbox": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc && node -e \"require('node:fs').chmodSync('dist/cli.js', 0o755)\"",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "@openai/agents": "0.17.2"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "@types/node": "22.15.30"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ]
+}

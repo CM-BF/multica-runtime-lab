@@ -1,0 +1,611 @@
+
+> multica-openai-sandbox@0.1.0 test
+> node --test test/*.test.mjs
+
+TEST_DIAGNOSTIC SystemError: Failed to serialize run state. [
+  {
+    "code": "invalid_union",
+    "errors": [
+      [
+        {
+          "expected": "string",
+          "code": "invalid_type",
+          "path": [],
+          "message": "Invalid input: expected string, received array"
+        }
+      ],
+      [
+        {
+          "code": "invalid_union",
+          "errors": [
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "user"
+                ],
+                "path": [
+                  "role"
+                ],
+                "message": "Invalid input: expected \"user\""
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "path": [
+                  "status"
+                ],
+                "message": "Invalid option: expected one of \"in_progress\"|\"completed\"|\"incomplete\""
+              },
+              {
+                "expected": "array",
+                "code": "invalid_type",
+                "path": [
+                  "content"
+                ],
+                "message": "Invalid input: expected array, received string"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "system"
+                ],
+                "path": [
+                  "role"
+                ],
+                "message": "Invalid input: expected \"system\""
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "tool_search_call"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"tool_search_call\""
+              },
+              {
+                "code": "invalid_type",
+                "expected": "nonoptional",
+                "path": [
+                  "arguments"
+                ],
+                "message": "Invalid input: expected nonoptional, received undefined"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "tool_search_output"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"tool_search_output\""
+              },
+              {
+                "expected": "array",
+                "code": "invalid_type",
+                "path": [
+                  "tools"
+                ],
+                "message": "Invalid input: expected array, received undefined"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "hosted_tool_call"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"hosted_tool_call\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "name"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "program"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"program\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "callId"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "code"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "fingerprint"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "program_output"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"program_output\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "callId"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "output"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "code": "invalid_value",
+                "values": [
+                  "completed",
+                  "incomplete"
+                ],
+                "path": [
+                  "status"
+                ],
+                "message": "Invalid option: expected one of \"completed\"|\"incomplete\""
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "function_call"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"function_call\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "callId"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "name"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "arguments"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "computer_call"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"computer_call\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "callId"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "code": "invalid_value",
+                "values": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "path": [
+                  "status"
+                ],
+                "message": "Invalid option: expected one of \"in_progress\"|\"completed\"|\"incomplete\""
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "shell_call"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"shell_call\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "callId"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "expected": "object",
+                "code": "invalid_type",
+                "path": [
+                  "action"
+                ],
+                "message": "Invalid input: expected object, received undefined"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "apply_patch_call"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"apply_patch_call\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "callId"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "code": "invalid_value",
+                "values": [
+                  "in_progress",
+                  "completed"
+                ],
+                "path": [
+                  "status"
+                ],
+                "message": "Invalid option: expected one of \"in_progress\"|\"completed\""
+              },
+              {
+                "code": "invalid_type",
+                "expected": "object",
+                "path": [
+                  "operation"
+                ],
+                "message": "Invalid input: expected object, received undefined"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "function_call_result"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"function_call_result\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "name"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "callId"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "code": "invalid_value",
+                "values": [
+                  "in_progress",
+                  "completed",
+                  "incomplete"
+                ],
+                "path": [
+                  "status"
+                ],
+                "message": "Invalid option: expected one of \"in_progress\"|\"completed\"|\"incomplete\""
+              },
+              {
+                "code": "invalid_union",
+                "errors": [
+                  [
+                    {
+                      "expected": "string",
+                      "code": "invalid_type",
+                      "path": [],
+                      "message": "Invalid input: expected string, received undefined"
+                    }
+                  ],
+                  [
+                    {
+                      "code": "invalid_type",
+                      "expected": "object",
+                      "path": [],
+                      "message": "Invalid input: expected object, received undefined"
+                    }
+                  ],
+                  [
+                    {
+                      "expected": "array",
+                      "code": "invalid_type",
+                      "path": [],
+                      "message": "Invalid input: expected array, received undefined"
+                    }
+                  ]
+                ],
+                "path": [
+                  "output"
+                ],
+                "message": "Invalid input"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "computer_call_result"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"computer_call_result\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "callId"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "expected": "object",
+                "code": "invalid_type",
+                "path": [
+                  "output"
+                ],
+                "message": "Invalid input: expected object, received undefined"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "shell_call_output"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"shell_call_output\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "callId"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "expected": "array",
+                "code": "invalid_type",
+                "path": [
+                  "output"
+                ],
+                "message": "Invalid input: expected array, received undefined"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "apply_patch_call_output"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"apply_patch_call_output\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "callId"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              },
+              {
+                "code": "invalid_value",
+                "values": [
+                  "completed",
+                  "failed"
+                ],
+                "path": [
+                  "status"
+                ],
+                "message": "Invalid option: expected one of \"completed\"|\"failed\""
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "reasoning"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"reasoning\""
+              },
+              {
+                "expected": "array",
+                "code": "invalid_type",
+                "path": [
+                  "content"
+                ],
+                "message": "Invalid input: expected array, received string"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "compaction"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"compaction\""
+              },
+              {
+                "expected": "string",
+                "code": "invalid_type",
+                "path": [
+                  "encrypted_content"
+                ],
+                "message": "Invalid input: expected string, received undefined"
+              }
+            ],
+            [
+              {
+                "code": "invalid_value",
+                "values": [
+                  "unknown"
+                ],
+                "path": [
+                  "type"
+                ],
+                "message": "Invalid input: expected \"unknown\""
+              }
+            ]
+          ],
+          "path": [
+            1
+          ],
+          "message": "Invalid input"
+        }
+      ]
+    ],
+    "path": [
+      "originalInput"
+    ],
+    "message": "Invalid input"
+  }
+]
+    at RunState.toJSON (file:///Users/citrine/Projects/multica-runtime-lab/runtime-bridges/openai-sandbox/node_modules/@openai/agents-core/dist/runState.mjs:2417:19)
+    at RunState.toString (file:///Users/citrine/Projects/multica-runtime-lab/runtime-bridges/openai-sandbox/node_modules/@openai/agents-core/dist/runState.mjs:2430:36)
+    at execute (file:///Users/citrine/Projects/multica-runtime-lab/runtime-bridges/openai-sandbox/dist/engine-debug.js:96:39)
+    at async file:///Users/citrine/Projects/multica-runtime-lab/runtime-bridges/openai-sandbox/test/fixture.mjs:17:3 {
+  state: undefined
+}
+✖ real Unix sandbox: cross-process archive recovery and artifact create/modify/delete; simulated model (2424.925041ms)
+✔ real SDK explicit MCP stdio list/call round trip (71.097125ms)
+Error initializing MCP server: object
+✔ required MCP failure prevents driver/model and cleans real workspace (5.464042ms)
+✔ real Unix cancellation stops shell child and retains dirty recovery (19.004917ms)
+✔ artifact conflict and unsafe paths reject before overwrite (2.205583ms)
+✔ events retain call identity and errors never echo raw credentials (0.48ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 5
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2972.331042
+
+✖ failing tests:
+
+test at test/bridge.test.mjs:16:1
+✖ real Unix sandbox: cross-process archive recovery and artifact create/modify/delete; simulated model (2424.925041ms)
+  AssertionError [ERR_ASSERTION]: [{"type":"event","kind":"status","status":"session_started","sessionId":"8f11e0b2daa5d35e70e5cc5096c2eb6c"},{"type":"event","kind":"text","text":"second"},{"type":"event","kind":"tool_use","id":"shell-1","name":"shell","text":""},{"type":"event","kind":"tool_result","id":"shell-1","name":"sandbox","text":"exit 0"},{"type":"result","status":"failed","error":"SDK_FAILURE","sessionId":"8f11e0b2daa5d35e70e5cc5096c2eb6c"}]
+  + actual - expected
+  
+  + 'failed'
+  - 'completed'
+  
+      at TestContext.<anonymous> (file:///Users/citrine/Projects/multica-runtime-lab/runtime-bridges/openai-sandbox/test/bridge.test.mjs:18:114)
+      at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+      at async Test.run (node:internal/test_runner/test:1054:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:297:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 'failed',
+    expected: 'completed',
+    operator: 'strictEqual'
+  }
+npm notice
+npm notice New major version of npm available! 10.9.2 -> 12.0.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+npm notice To update run: npm install -g npm@12.0.2
+npm notice
+
+EXIT_CODE=1

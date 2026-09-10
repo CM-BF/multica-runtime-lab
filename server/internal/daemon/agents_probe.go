@@ -192,6 +192,9 @@ var probeAgentCLIs = func() map[string]AgentEntry {
 	if e, ok := probe("MULTICA_OPENCLAW_PATH", "openclaw", "MULTICA_OPENCLAW_MODEL"); ok {
 		agents["openclaw"] = e
 	}
+	if e, ok := probe("MULTICA_OPENAI_SANDBOX_PATH", "multica-openai-sandbox", "MULTICA_OPENAI_SANDBOX_MODEL"); ok {
+		agents["openai-sandbox"] = e
+	}
 	if e, ok := probe("MULTICA_DEEPAGENTS_PATH", "multica-dcode-acp", "MULTICA_DEEPAGENTS_MODEL"); ok {
 		agents["deepagents"] = e
 	}

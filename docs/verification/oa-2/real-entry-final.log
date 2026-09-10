@@ -1,0 +1,9 @@
+=== RUN   TestOpenAISandboxRealEntryNoCredentials
+    openai_sandbox_integration_test.go:54: real SDK entry: status=failed error=openai-sandbox: MODEL_CREDENTIALS
+--- PASS: TestOpenAISandboxRealEntryNoCredentials (0.24s)
+=== RUN   TestOpenAISandboxRealSDKDescendantCancellation
+--- PASS: TestOpenAISandboxRealSDKDescendantCancellation (0.31s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/agent	0.735s
+
+EXIT_CODE=0

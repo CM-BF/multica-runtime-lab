@@ -1,0 +1,23 @@
+$ git remote get-url origin
+https://github.com/CM-BF/multica-runtime-lab.git
+EXIT_CODE=0
+$ git branch --show-current
+feat/ah-13-da-2-deepagents
+EXIT_CODE=0
+$ git rev-parse HEAD
+2699971b5af3c84f6bbdcd6d03af59ce13de4083
+EXIT_CODE=0
+$ node --version
+v23.11.0
+EXIT_CODE=0
+$ npm --version
+10.9.2
+EXIT_CODE=0
+$ .da2-tools/go/bin/go version
+go version go1.26.1 darwin/arm64
+EXIT_CODE=0
+$ git diff --check
+EXIT_CODE=0
+$ git diff --name-only -- server/pkg/agent/deepagents.go runtime-bridges/deepagents server/internal/daemon/deepagents_test.go
+EXIT_CODE=0
+Untracked deliverables containing build/private paths: []

@@ -1,0 +1,16 @@
+✔ real SDK explicit MCP stdio list/call round trip (181.921042ms)
+Error initializing MCP server: object
+✔ required MCP failure prevents driver/model and cleans real workspace (6.463709ms)
+✔ real Unix cancellation stops shell child and retains dirty recovery (17.002041ms)
+✔ artifact conflict and unsafe paths reject before overwrite (4.285708ms)
+✔ events retain call identity and errors never echo raw credentials (0.583ms)
+ℹ tests 5
+ℹ suites 0
+ℹ pass 5
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 735.7155
+
+EXIT_CODE=0

@@ -147,3 +147,14 @@ entered manually if discovery has no credentials. Managed MCP accepts explicit s
 in the same official loader and gates ACP startup on a matching READY receipt. The daemon pins `DEEPAGENTS_HOME` to a private
 conversation store; it does not copy global credentials or databases.
 See `docs/deepagents-runtime.md` for installation, limitations and validation.
+
+### OpenAI Sandbox
+
+Use protocol family `openai-sandbox` with the installed absolute
+`multica-openai-sandbox` executable from this fork's
+`runtime-bridges/openai-sandbox/`. Node >=22 and pinned `@openai/agents` 0.17.2 are
+required. It uses a JSONL bridge, not ACP. Enter an explicit model ID and configure
+model credentials explicitly; ambient account credentials are not inherited.
+Unix-local executes as the host user and is not a chroot/VM. See
+`docs/openai-sandbox-runtime.md` for private installation, explicit context/MCP,
+artifact export, clean checkpoint recovery and current acceptance limitations.

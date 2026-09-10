@@ -1,0 +1,3 @@
+{"type":"ready","protocol":1,"sdk":"0.17.2","capabilities":["unix-local","shell","mcp-stdio","mcp-http","artifacts","clean-checkpoint"]}
+
+EXIT_CODE=0

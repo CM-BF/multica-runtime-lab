@@ -6065,16 +6065,17 @@ func taskRootDirParams(workspacesRoot string, task Task) execenv.RootDirParams {
 // this map at init so their display names stay in lockstep with the
 // descriptor.
 var runtimeDisplayNameOverrides = map[string]string{
-	"deepagents": "Deep Agents",
-	"codearts":   "CodeArts",
-	"dsh":        "DeepSeek Harness",
-	"traecli":    "Trae",
-	"grok":       "Grok",
-	"qoderclicn": "Qoder CN",
-	"qwen":       "Qwen Code",
-	"qwenpaw":    "QwenPaw",
-	"mcode":      "MiniMax Code",
-	"zeroclaw":   "ZeroClaw",
+	"openai-sandbox": "OpenAI Sandbox",
+	"deepagents":     "Deep Agents",
+	"codearts":       "CodeArts",
+	"dsh":            "DeepSeek Harness",
+	"traecli":        "Trae",
+	"grok":           "Grok",
+	"qoderclicn":     "Qoder CN",
+	"qwen":           "Qwen Code",
+	"qwenpaw":        "QwenPaw",
+	"mcode":          "MiniMax Code",
+	"zeroclaw":       "ZeroClaw",
 }
 
 func init() {
@@ -6117,7 +6118,7 @@ func providerDisplayName(name string) string {
 // 2.13.0 ACP smoke — see the call site. Still unprobed: grok, qoder, codebuddy.
 func providerNeedsInlineSystemPrompt(provider string) bool {
 	switch provider {
-	case "openclaw", "kimi", "traecli", "qwenpaw":
+	case "openclaw", "kimi", "traecli", "qwenpaw", "openai-sandbox":
 		return true
 	default:
 		return false
@@ -8121,6 +8122,13 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 		agentCustomEnv = task.Agent.CustomEnv
 	}
 	layerCustomEnvAndHermesHome(agentEnv, agentCustomEnv, env.HermesHome, d.logger)
+	if provider == "openai-sandbox" {
+		state, err := execenv.PrepareOpenAISandboxState(d.cfg.Profile, task.RuntimeID, task.AgentID, task.WorkspaceID, task.ID, taskCtx)
+		if err != nil {
+			return TaskResult{}, err
+		}
+		agentEnv["OPENAI_SANDBOX_STATE"] = state
+	}
 	if provider == "deepagents" {
 		state, err := execenv.PrepareDeepAgentsHome(d.cfg.Profile, task.RuntimeID, task.AgentID, task.WorkspaceID, task.ID, taskCtx)
 		if err != nil {

@@ -213,6 +213,8 @@ func ListModels(ctx context.Context, providerType string, runtimeCmd Command) (C
 		return cachedDiscovery(discoveryCacheKey(providerType, runtimeCmd), func() (Catalog, error) {
 			return discoverCopilotModels(ctx, runtimeCmd)
 		})
+	case "openai-sandbox":
+		return Catalog{}, fmt.Errorf("openai-sandbox: enter an explicit model ID; credential-free catalog discovery is unavailable")
 	case "deepagents":
 		if err := validateDeepAgentsArgs(runtimeCmd.Prefix); err != nil {
 			return Catalog{}, err
