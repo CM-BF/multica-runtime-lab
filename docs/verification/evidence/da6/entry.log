@@ -1,0 +1,4 @@
+VERSION exit=0: multica-dcode-acp 0.1.0 schema=1 deepagents-code=0.1.68 deepagents-acp=0.0.11
+PRODUCTION --acp exit=1: missing model credentials; no READY; model E2E BLOCKED
+
+EXIT_CODE=0

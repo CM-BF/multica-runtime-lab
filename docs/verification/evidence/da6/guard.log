@@ -1,0 +1,10 @@
+test_config_mutation_and_loader_exception_are_safe (test_guard.GuardTests.test_config_mutation_and_loader_exception_are_safe) ... ok
+test_optional_and_object_identity_single_loader (test_guard.GuardTests.test_optional_and_object_identity_single_loader) ... ok
+test_required_matrix_cleanup_and_safe_receipt (test_guard.GuardTests.test_required_matrix_cleanup_and_safe_receipt) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.011s
+
+OK
+
+EXIT_CODE=0

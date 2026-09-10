@@ -197,7 +197,9 @@ func remoteMCPServerName(connection remotemcp.Connection) string {
 		}
 		return '-'
 	}, strings.ToLower(connection.ContributionKey))
-	suffix := strings.ReplaceAll(connection.ContributionID, "-", "")
+	// MCP clients such as dcode require alphanumeric, hyphen or underscore names.
+	// Plugin contribution IDs contain a colon even when the installation is a UUID.
+	suffix := strings.ReplaceAll(strings.ReplaceAll(connection.ContributionID, "-", ""), ":", "_")
 	if len(suffix) > 8 {
 		suffix = suffix[:8]
 	}

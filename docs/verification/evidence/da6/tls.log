@@ -1,0 +1,29 @@
+=== RUN   TestDeepAgentsRealTLSBrokerLoader
+    deepagents_tls_integration_test.go:140: PASS: missing private CA rejects broker startup with certificate verification error; loader not launched
+    deepagents_tls_integration_test.go:190: multica-dcode-acp 0.1.0 schema=1 deepagents-code=0.1.68 deepagents-acp=0.0.11
+    deepagents_tls_integration_test.go:196: Traceback (most recent call last):
+          File "/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-mk36o_y3/TestDeepAgentsRealTLSBrokerLoader3966819626/001/loader.py", line 51, in <module>
+            asyncio.run(main())
+            ~~~~~~~~~~~^^^^^^^^
+          File "/opt/homebrew/Cellar/python@3.13/3.13.3_1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 195, in run
+            return runner.run(main)
+                   ~~~~~~~~~~^^^^^^
+          File "/opt/homebrew/Cellar/python@3.13/3.13.3_1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/runners.py", line 118, in run
+            return self._loop.run_until_complete(task)
+                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+          File "/opt/homebrew/Cellar/python@3.13/3.13.3_1/Frameworks/Python.framework/Versions/3.13/lib/python3.13/asyncio/base_events.py", line 719, in run_until_complete
+            return future.result()
+                   ~~~~~~~~~~~~~^^
+          File "/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-mk36o_y3/TestDeepAgentsRealTLSBrokerLoader3966819626/001/loader.py", line 25, in main
+            tools, manager, infos = await resolve_and_load_mcp_tools(explicit_config_path=config_path)
+                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          File "/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-mk36o_y3/TestDeepAgentsRealTLSBrokerLoader3966819626/001/multica_dcode_acp/__init__.py", line 104, in guarded
+            raise RuntimeError(code) from None
+        RuntimeError: MCP_CONFIG_INVALID
+    deepagents_tls_integration_test.go:198: official guarded loader exit: exit status 1
+--- FAIL: TestDeepAgentsRealTLSBrokerLoader (0.27s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon	0.595s
+FAIL
+
+EXIT_CODE=1

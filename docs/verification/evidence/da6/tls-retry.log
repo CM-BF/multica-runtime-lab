@@ -1,0 +1,13 @@
+=== RUN   TestDeepAgentsRealTLSBrokerLoader
+    deepagents_tls_integration_test.go:140: PASS: missing private CA rejects broker startup with certificate verification error; loader not launched
+    deepagents_tls_integration_test.go:190: multica-dcode-acp 0.1.0 schema=1 deepagents-code=0.1.68 deepagents-acp=0.0.11
+    deepagents_tls_integration_test.go:196: PASS: installed wrapper guard READY, official loader initialized once; tools/list exposes only fixture.read
+        PASS: official loader tool ainvoke -> broker -> trusted TLS upstream -> fixture-value
+        PASS: direct forbidden tools/call rejected by broker policy
+        PASS: official manager cleanup completed
+    deepagents_tls_integration_test.go:203: PASS: real TLS upstream initialize=4 tools/list=4 allowed calls=1 forbidden calls=0; no model credentials/agent loop
+--- PASS: TestDeepAgentsRealTLSBrokerLoader (1.05s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon	2.394s
+
+EXIT_CODE=0

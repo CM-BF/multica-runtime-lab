@@ -1,0 +1,41 @@
+=== RUN   TestDeepAgentsRealPluginMCP
+=== RUN   TestDeepAgentsRealPluginMCP/success
+2026/09/10 03:17:23 INFO agent command provider=deepagents exec=/Users/citrine/Projects/multica-runtime-lab/.da2-tools/venv/bin/python args="[<redacted> --acp --mcp-config <redacted>]" arg_count=4
+    deepagents_integration_test.go:192: real dcode tools/list discovered platform_echo; tools/call traversed daemon handler: task-canary/install-canary/hook-canary/{"value":"platform-canary"}
+    deepagents_integration_test.go:206: generated HTTP config -> adapter private 0600 config -> installed dcode loader -> loopback daemon handler -> completed ACP result; isolated env has no model credentials
+=== RUN   TestDeepAgentsRealPluginMCP/http-required
+2026/09/10 03:17:24 INFO agent command provider=deepagents exec=/Users/citrine/Projects/multica-runtime-lab/.da2-tools/venv/bin/python args="[<redacted> --acp --mcp-config <redacted>]" arg_count=4
+    deepagents_integration_test.go:172: http-required real loader failure blocked every RPC and tool call deepagents: MCP_REQUIRED_UNREADY
+=== RUN   TestDeepAgentsRealPluginMCP/stdio-required
+2026/09/10 03:17:25 INFO agent command provider=deepagents exec=/Users/citrine/Projects/multica-runtime-lab/.da2-tools/venv/bin/python args="[<redacted> --acp --mcp-config <redacted>]" arg_count=4
+    deepagents_integration_test.go:172: stdio-required real loader failure blocked every RPC and tool call deepagents: MCP_REQUIRED_UNREADY
+=== RUN   TestDeepAgentsRealPluginMCP/http-optional
+2026/09/10 03:17:25 INFO agent command provider=deepagents exec=/Users/citrine/Projects/multica-runtime-lab/.da2-tools/venv/bin/python args="[<redacted> --acp --mcp-config <redacted>]" arg_count=4
+    deepagents_integration_test.go:179: optional real HTTP failure degraded; zero tool calls; completed
+=== RUN   TestDeepAgentsRealPluginMCP/missing-tool
+2026/09/10 03:17:26 INFO agent command provider=deepagents exec=/Users/citrine/Projects/multica-runtime-lab/.da2-tools/venv/bin/python args="[<redacted> --acp --mcp-config <redacted>]" arg_count=4
+    deepagents_integration_test.go:172: missing-tool real loader failure blocked every RPC and tool call deepagents: MCP_REQUIRED_UNREADY
+=== RUN   TestDeepAgentsRealPluginMCP/stdio-success
+2026/09/10 03:17:26 INFO agent command provider=deepagents exec=/Users/citrine/Projects/multica-runtime-lab/.da2-tools/venv/bin/python args="[<redacted> --acp --mcp-config <redacted>]" arg_count=4
+    deepagents_integration_test.go:192: real dcode tools/list discovered platform_echo; tools/call traversed daemon handler: task-canary/install-canary/hook-canary/{"value":"platform-canary"}
+    deepagents_integration_test.go:204: real stdio tool round trip; zero readiness invocations
+    deepagents_integration_test.go:206: generated HTTP config -> adapter private 0600 config -> installed dcode loader -> loopback daemon handler -> completed ACP result; isolated env has no model credentials
+=== RUN   TestDeepAgentsRealPluginMCP/missing-metadata
+2026/09/10 03:17:27 INFO agent command provider=deepagents exec=/Users/citrine/Projects/multica-runtime-lab/.da2-tools/venv/bin/python args="[<redacted> --acp --mcp-config <redacted>]" arg_count=4
+    deepagents_integration_test.go:172: missing-metadata real loader failure blocked every RPC and tool call deepagents: MCP_REQUIRED_UNREADY
+=== RUN   TestDeepAgentsRealPluginMCP/schema-mismatch
+2026/09/10 03:17:28 INFO agent command provider=deepagents exec=/Users/citrine/Projects/multica-runtime-lab/.da2-tools/venv/bin/python args="[<redacted> --acp --mcp-config <redacted>]" arg_count=4
+    deepagents_integration_test.go:172: schema-mismatch real loader failure blocked every RPC and tool call deepagents: MCP_REQUIRED_UNREADY
+--- PASS: TestDeepAgentsRealPluginMCP (5.04s)
+    --- PASS: TestDeepAgentsRealPluginMCP/success (0.59s)
+    --- PASS: TestDeepAgentsRealPluginMCP/http-required (0.56s)
+    --- PASS: TestDeepAgentsRealPluginMCP/stdio-required (0.56s)
+    --- PASS: TestDeepAgentsRealPluginMCP/http-optional (0.57s)
+    --- PASS: TestDeepAgentsRealPluginMCP/missing-tool (0.53s)
+    --- PASS: TestDeepAgentsRealPluginMCP/stdio-success (1.19s)
+    --- PASS: TestDeepAgentsRealPluginMCP/missing-metadata (0.52s)
+    --- PASS: TestDeepAgentsRealPluginMCP/schema-mismatch (0.53s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon	6.384s
+
+EXIT_CODE=0
