@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"crypto/rand"
+	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
 	"errors"
@@ -60,6 +61,11 @@ func startTaskRemoteMCPBrokers(setupCtx, lifetimeCtx context.Context, taskID, pr
 	servers := map[string]any{}
 	diagnostics := make([]string, 0)
 	for _, connection := range connections {
+		name := remoteMCPServerName(connection)
+		if _, exists := servers[name]; exists {
+			set.Close()
+			return nil, diagnostics, nil, errors.New("Remote MCP server name collision")
+		}
 		if !providerSupportsRemoteMCPBroker(provider) {
 			message := fmt.Sprintf("Remote MCP %s is incompatible with provider %s", connection.ContributionKey, provider)
 			if connection.FailurePolicy == "optional" {
@@ -134,7 +140,6 @@ func startTaskRemoteMCPBrokers(setupCtx, lifetimeCtx context.Context, taskID, pr
 				logger.Warn("Remote MCP broker stopped unexpectedly", "task_id", taskID, "contribution", connection.ContributionKey, "error", serveErr)
 			}
 		}()
-		name := remoteMCPServerName(connection)
 		servers[name] = map[string]any{
 			"type": "http",
 			"url":  "http://" + listener.Addr().String() + proxy.path,
@@ -197,13 +202,10 @@ func remoteMCPServerName(connection remotemcp.Connection) string {
 		}
 		return '-'
 	}, strings.ToLower(connection.ContributionKey))
-	// MCP clients such as dcode require alphanumeric, hyphen or underscore names.
-	// Plugin contribution IDs contain a colon even when the installation is a UUID.
-	suffix := strings.ReplaceAll(strings.ReplaceAll(connection.ContributionID, "-", ""), ":", "_")
-	if len(suffix) > 8 {
-		suffix = suffix[:8]
-	}
-	return "plugin-" + name + "-" + suffix
+	// Hash the complete identity, including the installation and contribution key.
+	// 128 bits avoids prefix collisions without exposing the original ID.
+	digest := sha256.Sum256([]byte(connection.ContributionID))
+	return "plugin-" + name + "-" + hex.EncodeToString(digest[:16])
 }
 
 type remoteMCPProxy struct {

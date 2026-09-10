@@ -1,0 +1,21 @@
+=== RUN   TestValidatePublicHTTPSEndpoint
+--- PASS: TestValidatePublicHTTPSEndpoint (0.00s)
+=== RUN   TestHostAllowedWildcardDoesNotMatchApex
+--- PASS: TestHostAllowedWildcardDoesNotMatchApex (0.00s)
+=== RUN   TestContainsProtocolVersion
+--- PASS: TestContainsProtocolVersion (0.00s)
+=== RUN   TestToolSetDigestIgnoresInputSchemaObjectKeyOrder
+--- PASS: TestToolSetDigestIgnoresInputSchemaObjectKeyOrder (0.00s)
+=== RUN   TestProtectedResourceMetadataURLPreservesResourcePath
+--- PASS: TestProtectedResourceMetadataURLPreservesResourcePath (0.00s)
+=== RUN   TestAuthorizationMetadataURLsPreserveIssuerPath
+--- PASS: TestAuthorizationMetadataURLsPreserveIssuerPath (0.00s)
+=== RUN   TestBuildAuthorizationURLPinsPKCEStateAndResource
+--- PASS: TestBuildAuthorizationURLPinsPKCEStateAndResource (0.00s)
+=== RUN   TestValidateOAuthMetadataRejectsUnsafeAdvancedOverride
+--- PASS: TestValidateOAuthMetadataRejectsUnsafeAdvancedOverride (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/remotemcp	1.175s
+?   	github.com/multica-ai/multica/server/pkg/remotemcp/remotemcptest	[no test files]
+
+EXIT_CODE=0

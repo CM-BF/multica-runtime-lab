@@ -1,0 +1,16 @@
+COMMAND=["/Users/citrine/Projects/multica-runtime-lab/.da2-tools/go/bin/go", "-C", "/Users/citrine/Projects/multica-runtime-lab/server", "test", "-race", "-overlay", "/Users/citrine/multica_workspaces/agentharnes-43e260726e98/ah-13-e9a4c879dd02/workdir/da7-overlay.json", "./internal/daemon", "-run", "^TestDA7BrokerNames$", "-count=1", "-v", "-timeout=300s"]
+ENV={"GOCACHE": "/Users/citrine/multica_workspaces/agentharnes-43e260726e98/ah-13-e9a4c879dd02/workdir/da7-private-_dahkpb_/gocache", "GOMODCACHE": "/Users/citrine/go/pkg/mod", "GOPATH": "/Users/citrine/multica_workspaces/agentharnes-43e260726e98/ah-13-e9a4c879dd02/workdir/da7-private-_dahkpb_/go", "GOTMPDIR": "/Users/citrine/multica_workspaces/agentharnes-43e260726e98/ah-13-e9a4c879dd02/workdir/da7-private-_dahkpb_", "GOTOOLCHAIN": "auto", "HOME": "/Users/citrine/multica_workspaces/agentharnes-43e260726e98/ah-13-e9a4c879dd02/workdir/da7-private-_dahkpb_", "PATH": "/usr/bin:/bin:/usr/sbin:/sbin", "PYTHONDONTWRITEBYTECODE": "1", "TMPDIR": "/Users/citrine/multica_workspaces/agentharnes-43e260726e98/ah-13-e9a4c879dd02/workdir/da7-private-_dahkpb_", "USERPROFILE": "/Users/citrine/multica_workspaces/agentharnes-43e260726e98/ah-13-e9a4c879dd02/workdir/da7-private-_dahkpb_", "XDG_CACHE_HOME": "/Users/citrine/multica_workspaces/agentharnes-43e260726e98/ah-13-e9a4c879dd02/workdir/da7-private-_dahkpb_/cache", "XDG_CONFIG_HOME": "/Users/citrine/multica_workspaces/agentharnes-43e260726e98/ah-13-e9a4c879dd02/workdir/da7-private-_dahkpb_/config", "XDG_DATA_HOME": "/Users/citrine/multica_workspaces/agentharnes-43e260726e98/ah-13-e9a4c879dd02/workdir/da7-private-_dahkpb_/data"}
+=== RUN   TestDA7BrokerNames
+=== RUN   TestDA7BrokerNames/valid-plugin-name
+    da7_names_test.go:6: plugin-toolbox-plugin_0
+=== RUN   TestDA7BrokerNames/distinct-installations
+    da7_names_test.go:7: name1=plugin-toolbox-plugin_0 name2=plugin-toolbox-plugin_0
+    da7_names_test.go:7: distinct plugin installations collide; servers[name] overwrites earlier connection
+--- FAIL: TestDA7BrokerNames (0.00s)
+    --- PASS: TestDA7BrokerNames/valid-plugin-name (0.00s)
+    --- FAIL: TestDA7BrokerNames/distinct-installations (0.00s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/daemon	0.329s
+FAIL
+
+EXIT_CODE=1
