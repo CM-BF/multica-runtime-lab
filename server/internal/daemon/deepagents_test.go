@@ -1,9 +1,14 @@
 package daemon
 
 import (
+	"bytes"
+	"context"
+	"encoding/json"
 	"github.com/multica-ai/multica/server/pkg/agent"
+	"github.com/multica-ai/multica/server/pkg/remotemcp"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -39,4 +44,72 @@ func TestDeepAgentsDiscovery(t *testing.T) {
 	if providerDisplayName("deepagents") != "Deep Agents" {
 		t.Fatal("display name")
 	}
+}
+
+func TestDeepAgentsMCPConfigurationBoundary(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	t.Setenv("USERPROFILE", home)
+	if err := os.MkdirAll(filepath.Join(home, ".deepagents"), 0700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(home, ".deepagents", "mcp.json"), []byte(`{"mcpServers":{"ambient":{"command":"not-imported"}}}`), 0600); err != nil {
+		t.Fatal(err)
+	}
+	explicit := json.RawMessage(`{"mcpServers":{"user":{"command":"explicit-stdio","args":["value"],"env":{"CANARY":"test"}}}}`)
+	merged, err := mergeRuntimeAndAgentMcpConfig("deepagents", explicit)
+	if err != nil || !bytes.Equal(merged, explicit) {
+		t.Fatalf("explicit config changed: %s %v", merged, err)
+	}
+	defaults, err := mergeRuntimeAndAgentMcpConfig("deepagents", nil)
+	if err != nil || len(defaults) != 0 {
+		t.Fatalf("unexpected default MCP: %s %v", defaults, err)
+	}
+	_, supported, err := loadRuntimeMcpServerConfigs("deepagents")
+	if err != nil || supported {
+		t.Fatal("global import must be unsupported", err)
+	}
+	t.Log("explicit agent stdio config preserved byte-for-byte; nil stays nil; global runtime MCP import unsupported")
+
+	// Exercise the real broker gate without opening a listener or resolving credentials.
+	raw, _, brokers, err := startTaskRemoteMCPBrokers(context.Background(), context.Background(), "test", "deepagents", []remotemcp.Connection{{ContributionKey: "required", FailurePolicy: "required"}}, nil, nil)
+	if err == nil || brokers != nil || len(raw) != 0 || !strings.Contains(err.Error(), "incompatible") {
+		t.Fatalf("remote gate: %s %v %v", raw, brokers, err)
+	}
+	t.Log("required platform Remote MCP broker rejected by provider gate")
+
+	// The production plugin generator uses its own ephemeral loopback listener.
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	plugin, set, err := startTaskPluginHookMCP(ctx, "test", []PluginHookTool{{Name: "test-tool"}}, func(context.Context, string, string, string, json.RawMessage) (json.RawMessage, error) {
+		t.Error("no external invocation expected")
+		return nil, nil
+	}, nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer set.Close()
+	merged, err = mergeTaskRemoteMCPConfig(explicit, plugin)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var config struct {
+		Servers map[string]struct {
+			Type string `json:"type"`
+		} `json:"mcpServers"`
+	}
+	if err = json.Unmarshal(merged, &config); err != nil || config.Servers["multica-plugins"].Type != "http" {
+		t.Fatal("plugin config transport", err)
+	}
+	backend, err := agent.New("deepagents", agent.Config{ExecutablePath: filepath.Join(home, "must-not-start"), Env: map[string]string{"DEEPAGENTS_HOME": filepath.Join(home, "state")}})
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = backend.Execute(ctx, "test", agent.ExecOptions{Cwd: home, McpConfig: merged})
+	if err == nil || !strings.Contains(err.Error(), "explicit stdio command required") {
+		t.Fatalf("expected pre-launch rejection of real plugin HTTP config: %v", err)
+	}
+	cancel()
+	set.Close()
+	t.Log("real multica-plugins HTTP config merged with explicit stdio then rejected before process startup; platform plugin MCP unsupported")
 }

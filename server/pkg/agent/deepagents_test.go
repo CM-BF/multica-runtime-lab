@@ -3,6 +3,7 @@ package agent
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -22,10 +23,13 @@ func deepAgentsFake(t *testing.T, mode string) (Backend, ExecOptions, string) {
 	root := t.TempDir()
 	script := filepath.Join(root, "fake dcode")
 	code := `#!` + python + `
-import sys,json,os,subprocess
+import sys,json,os,subprocess,time
 mode=os.environ['DA_MODE']
 record=os.environ['DA_RECORD']
 with open(record+'.pid','w') as f:f.write(str(os.getpid()))
+if mode in ('credentials','dependency'):
+ print(('Error: No credentials configured' if mode=='credentials' else 'ModuleNotFoundError: missing runtime dependency')+' private-value-do-not-leak',file=sys.stderr,flush=True)
+ sys.exit(1)
 def send(x): print(json.dumps(x),flush=True)
 def update(text): send({'jsonrpc':'2.0','method':'session/update','params':{'sessionId':'s1','update':{'sessionUpdate':'agent_message_chunk','content':{'type':'text','text':text}}}})
 with open(record+'.args','w') as f: json.dump(sys.argv[1:],f)
@@ -58,6 +62,12 @@ for line in sys.stdin:
    continue
   if mode=='eof':sys.exit(0)
   if mode=='malformed':print('not json',flush=True);continue
+  if mode=='burst':
+   for i in range(400):
+    update('text-%04d;'%i)
+    id='tool-%04d'%i
+    send({'jsonrpc':'2.0','method':'session/update','params':{'sessionId':'s1','update':{'sessionUpdate':'tool_call','toolCallId':id,'title':'Read file','kind':'read','status':'in_progress','rawInput':{'path':'test'}}}})
+    send({'jsonrpc':'2.0','method':'session/update','params':{'sessionId':'s1','update':{'sessionUpdate':'tool_call_update','toolCallId':id,'status':'completed','content':[{'type':'content','content':{'type':'text','text':'result-%04d'%i}}]}}})
   if mode=='tools':
    update('BEFORE')
    for id in ('tool1','tool2'):
@@ -67,6 +77,17 @@ for line in sys.stdin:
   result={'stopReason':mode if mode in ('max_tokens','max_turn_requests','refusal','cancelled','unknown') else 'end_turn'}
   if mode=='no-stop':result={}
  send({'jsonrpc':'2.0','id':q['id'],'result':result})
+ if mode=='no-read' and method=='session/new':
+  import fcntl,termios,array
+  child=subprocess.Popen([sys.executable,'-c','import time;time.sleep(30)'])
+  with open(record+'.child','w') as f:f.write(str(child.pid))
+  while True:
+   queued=array.array('i',[0])
+   fcntl.ioctl(sys.stdin.fileno(),termios.FIONREAD,queued,True)
+   if queued[0]>=4096:break
+   time.sleep(.001)
+  with open(record+'.full','w') as f:f.write(str(queued[0]))
+  time.sleep(30)
 `
 	if err = os.WriteFile(script, []byte(code), 0700); err != nil {
 		t.Fatal(err)
@@ -299,5 +320,185 @@ func TestDeepAgentsToolsAndFinalAnswer(t *testing.T) {
 	r := <-s.Result
 	if len(calls) != 2 || r.Output != "CURRENT" || r.Status != "completed" {
 		t.Fatalf("calls=%v result=%+v", calls, r)
+	}
+}
+
+func TestDeepAgentsSlowConsumerLossless(t *testing.T) {
+	b, o, _ := deepAgentsFake(t, "burst")
+	o.Timeout = 10 * time.Second
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	s, e := b.Execute(ctx, "prompt", o)
+	if e != nil {
+		t.Fatal(e)
+	}
+	// Observe a full queue, independent of Python startup speed.
+	deepAgentsWaitFullQueue(t, s)
+	time.Sleep(20 * time.Millisecond)
+	var text strings.Builder
+	starts, ends := map[string]int{}, map[string]int{}
+	outputs := map[string]string{}
+	for m := range s.Messages {
+		switch m.Type {
+		case MessageText:
+			text.WriteString(m.Content)
+		case MessageToolUse:
+			starts[m.CallID]++
+		case MessageToolResult:
+			ends[m.CallID]++
+			outputs[m.CallID] = m.Output
+		}
+		time.Sleep(time.Millisecond)
+	}
+	r := <-s.Result
+	if r.Status != "completed" {
+		t.Fatalf("%+v", r)
+	}
+	var want strings.Builder
+	for i := 0; i < 400; i++ {
+		want.WriteString(fmt.Sprintf("text-%04d;", i))
+		id := fmt.Sprintf("tool-%04d", i)
+		if starts[id] != 1 || ends[id] != 1 || !strings.Contains(outputs[id], fmt.Sprintf("result-%04d", i)) {
+			t.Fatalf("%s starts=%d ends=%d", id, starts[id], ends[id])
+		}
+	}
+	want.WriteString("CURRENT")
+	if text.String() != want.String() || r.Output != "CURRENT" {
+		t.Fatalf("stream bytes=%d want=%d final=%q", text.Len(), want.Len(), r.Output)
+	}
+	t.Logf("delivered 401 text chunks, %d tool starts, %d tool completions; result=%s", len(starts), len(ends), r.Status)
+}
+
+func TestDeepAgentsUnconsumedMessages(t *testing.T) {
+	for _, cancelRun := range []bool{false, true} {
+		t.Run(fmt.Sprint(cancelRun), func(t *testing.T) {
+			b, o, _ := deepAgentsFake(t, "burst")
+			o.Timeout = 0
+			ctx, cancel := context.WithCancel(context.Background())
+			defer cancel()
+			s, e := b.Execute(ctx, "prompt", o)
+			if e != nil {
+				t.Fatal(e)
+			}
+			if cancelRun {
+				deepAgentsWaitFullQueue(t, s)
+				time.Sleep(20 * time.Millisecond)
+				cancel()
+			}
+			select {
+			case r := <-s.Result:
+				want := "failed"
+				if cancelRun {
+					want = "aborted"
+				}
+				if r.Status != want || !strings.Contains(r.Error, "message") {
+					t.Fatalf("silent stream loss: %+v", r)
+				}
+				n := 0
+				for range s.Messages {
+					n++
+				}
+				if n != 256 {
+					t.Fatalf("buffered events=%d", n)
+				}
+				t.Logf("no consumer: %s, %q; %d queued events retained", r.Status, r.Error, n)
+			case <-time.After(4 * time.Second):
+				t.Fatal("Result blocked by unconsumed Messages")
+			}
+		})
+	}
+}
+
+func TestDeepAgentsCancelNoReadStdin(t *testing.T) {
+	b, o, path := deepAgentsFake(t, "no-read")
+	o.Timeout = 0
+	o.TurnInterruptTimeout = 50 * time.Millisecond
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	t.Cleanup(func() {
+		for _, suffix := range []string{".child", ".pid"} {
+			data, _ := os.ReadFile(path + suffix)
+			pid, _ := strconv.Atoi(string(data))
+			if pid > 0 {
+				p, e := os.FindProcess(pid)
+				if e == nil {
+					_ = p.Kill()
+				}
+			}
+		}
+	})
+	s, e := b.Execute(ctx, strings.Repeat("x", 8<<20), o)
+	if e != nil {
+		t.Fatal(e)
+	}
+	deadline := time.Now().Add(3 * time.Second)
+	for {
+		if data, e := os.ReadFile(path + ".full"); e == nil {
+			t.Logf("child does not read stdin; pipe has %s unread bytes, prompt=8 MiB", data)
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatal("fixture did not fill stdin")
+		}
+		time.Sleep(time.Millisecond)
+	}
+	started := time.Now()
+	cancel()
+	select {
+	case r := <-s.Result:
+		elapsed := time.Since(started)
+		if r.Status != "aborted" || elapsed > o.TurnInterruptTimeout+2*time.Second {
+			t.Fatalf("elapsed=%s result=%+v", elapsed, r)
+		}
+		for _, suffix := range []string{".child", ".pid"} {
+			data, e := os.ReadFile(path + suffix)
+			if e != nil {
+				t.Fatal(e)
+			}
+			pid, _ := strconv.Atoi(string(data))
+			p, _ := os.FindProcess(pid)
+			deadline := time.Now().Add(time.Second)
+			for p.Signal(syscall.Signal(0)) == nil {
+				if time.Now().After(deadline) {
+					t.Fatalf("process %d survived", pid)
+				}
+				time.Sleep(time.Millisecond)
+			}
+		}
+		t.Logf("cancel Result after %s (budget %s + 2s cleanup); parent/child reaped", elapsed, o.TurnInterruptTimeout)
+	case <-time.After(o.TurnInterruptTimeout + 2*time.Second):
+		t.Fatal("cancel blocked on full stdin/write mutex")
+	}
+}
+
+func deepAgentsWaitFullQueue(t *testing.T, s *Session) {
+	t.Helper()
+	deadline := time.Now().Add(3 * time.Second)
+	for len(s.Messages) != 256 {
+		if time.Now().After(deadline) {
+			t.Fatal("message queue did not fill")
+		}
+		time.Sleep(time.Millisecond)
+	}
+}
+
+func TestDeepAgentsSafeStartupDiagnostics(t *testing.T) {
+	for _, mode := range []string{"credentials", "dependency"} {
+		t.Run(mode, func(t *testing.T) {
+			b, o, _ := deepAgentsFake(t, mode)
+			s, e := b.Execute(context.Background(), "prompt", o)
+			if e != nil {
+				t.Fatal(e)
+			}
+			r := deepAgentsResult(t, s)
+			want := "configure provider credentials"
+			if mode == "dependency" {
+				want = "install the documented deepagents-code"
+			}
+			if r.Status != "failed" || !strings.Contains(r.Error, want) || strings.Contains(r.Error, "private-value-do-not-leak") {
+				t.Fatalf("%+v", r)
+			}
+			t.Log(r.Error)
+		})
 	}
 }

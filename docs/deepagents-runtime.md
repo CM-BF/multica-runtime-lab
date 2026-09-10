@@ -42,13 +42,23 @@ Supply only the intended provider credentials through the agent's environment
 settings or the independent daemon environment. Never put keys into arguments,
 source files, logs or issue comments. Unconfigured dcode currently exits before
 ACP initialization with a missing-credentials error; Multica reports a failed
-initialize stage, without copying raw provider stderr into task output.
+initialize stage with a fixed, actionable credential/dependency hint when recognized.
+Raw provider stderr is never copied into task output.
 
 Managed MCP currently accepts only canonical explicit stdio entries:
 
 ```json
 {"mcpServers":{"local":{"command":"/absolute/path/to/mcp-server","args":[]}}}
 ```
+
+The adapter consumes only `ExecOptions.McpConfig`; **default platform MCP and
+global user MCP discovery are unsupported**. The daemon preserves an explicit
+agent stdio config, but does not synthesize a default MCP config for Deep Agents.
+Its required Remote MCP broker provider gate rejects this family. The actual
+`multica-plugins` config generator produces HTTP, which this adapter rejects
+before launch. The negative boundary test is
+`TestDeepAgentsMCPConfigurationBoundary`; it does not claim platform MCP works.
+A prepared AGENTS/CLI brief is a different mechanism and is not MCP verification.
 
 Each execution validates the object, writes it in a private directory (0700) as
 a 0600 file, and adds `--mcp-config`. New and loaded ACP sessions receive an empty
@@ -84,8 +94,16 @@ fresh-session fallback; auth, cwd, database and capability failures preserve the
 pointer. A process killed during tool execution has unknown side effects;
 exactly-once execution is not guaranteed.
 
-Cancellation sends a notification, waits at most two seconds (configurable by
-`TurnInterruptTimeout`), then kills and joins the owned process tree. `end_turn`
+Messages use a 256-entry bounded queue with cancellable backpressure. A slow
+consumer receives every event while it continues draining. A send stalled for
+two seconds fails the run explicitly with `message consumer stalled`; abandoning
+the stream cannot silently return a truncated success. Cancellation also reports
+an interrupted stream when queued delivery cannot finish. Buffered events remain
+readable after Result; successful streaming callers must consume Messages.
+
+Cancellation attempts a notification in an owned worker, waits at most two seconds (configurable by
+`TurnInterruptTimeout`), then closes the pipes, kills the owned process tree and joins all RPC workers.
+A blocked prompt/cancel write cannot keep the session owner from reaching cleanup. `end_turn`
 completes; `cancelled` aborts; token limits, refusal, malformed output, EOF and
 missing/unknown stop reasons fail. Context deadlines time out. Result is emitted
 once after cleanup. Usage remains unknown when not reported; no cost is inferred.

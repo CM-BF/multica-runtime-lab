@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 	"sync/atomic"
 	"syscall"
 	"time"
@@ -16,6 +17,12 @@ import (
 
 // deepagentsBackend delegates the agent loop to the official dcode ACP entry.
 type deepagentsBackend struct{ cfg Config }
+
+// A caller may omit Messages, but must not receive a successful, truncated stream.
+// Bound a stalled send independently of the run timeout, which may be disabled.
+const deepAgentsMessageStallTimeout = 2 * time.Second
+
+var errDeepAgentsMessageStall = errors.New("deepagents: message consumer stalled; consume Session.Messages to receive all events")
 
 func validateDeepAgentsArgs(args []string) error {
 	for _, arg := range args {
@@ -115,7 +122,8 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 	cmd.Dir = cwd
 	cmd.Env = buildEnv(b.cfg.Env)
 	cmd.WaitDelay = 2 * time.Second
-	cmd.Stderr = io.Discard // Never expose provider config or credentials from stderr.
+	diagnostics := &deepAgentsDiagnostics{}
+	cmd.Stderr = diagnostics
 	stdin, err := cmd.StdinPipe()
 	if err != nil {
 		stopProcess()
@@ -140,15 +148,43 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 	messages := make(chan Message, 256)
 	results := make(chan Result, 1)
 	var terminal, active atomic.Bool
-	runCtx, cancel := runContext(ctx, opts.Timeout)
+	timeoutCtx, stopTimeout := runContext(ctx, opts.Timeout)
+	runCtx, cancelRun := context.WithCancelCause(timeoutCtx)
+	deliveryCtx, stopDelivery := context.WithCancel(runCtx)
+	var deliveryInterrupted atomic.Bool
+	// Requests can be blocked inside stdin.Write, before hermesClient.request
+	// reaches its context select. The session owner always selects independently
+	// and joins these workers only AFTER closing the pipe and killing the tree.
+	var rpcWorkers sync.WaitGroup
 	c := &hermesClient{cfg: b.cfg, stdin: stdin, pending: make(map[int]*pendingRPC)}
 	var output acpDeliverableTracker
 	c.acceptNotification = func(string) bool { return active.Load() }
 	c.onMessage = func(m Message) {
 		output.observe(m)
+		timer := time.NewTimer(deepAgentsMessageStallTimeout)
+		defer timer.Stop()
 		select {
 		case messages <- m:
-		default:
+		case <-deliveryCtx.Done():
+			deliveryInterrupted.Store(true)
+		case <-timer.C:
+			deliveryInterrupted.Store(true)
+			cancelRun(errDeepAgentsMessageStall)
+		}
+	}
+	request := func(requestCtx context.Context, method string, params any) (json.RawMessage, error) {
+		reply := make(chan rpcResult, 1)
+		rpcWorkers.Add(1)
+		go func() {
+			defer rpcWorkers.Done()
+			value, err := c.request(requestCtx, method, params)
+			reply <- rpcResult{result: value, err: err}
+		}()
+		select {
+		case result := <-reply:
+			return result.result, result.err
+		case <-requestCtx.Done():
+			return nil, requestCtx.Err()
 		}
 	}
 	readerDone := make(chan struct{})
@@ -162,6 +198,9 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 				return
 			}
 			c.handleLine(line)
+			if deliveryCtx.Err() != nil {
+				break
+			}
 		}
 		c.closeAllPending(io.EOF)
 	}()
@@ -169,7 +208,7 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 		started := time.Now()
 		r := Result{Status: "failed", SessionID: opts.ResumeSessionID}
 		defer func() {
-			active.Store(false)
+			stopDelivery()
 			_ = stdin.Close()
 			signalProcessGroup(cmd, syscall.SIGKILL)
 			stopProcess()
@@ -177,8 +216,22 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 			_ = cmd.Wait()
 			releaseProcessGroup(cmd)
 			<-readerDone
+			rpcWorkers.Wait()
+			active.Store(false)
 			cleanMCP()
-			cancel()
+			cancelRun(nil)
+			stopTimeout()
+			if deliveryInterrupted.Load() {
+				if r.Status == "completed" {
+					r.Status = "failed"
+				}
+				r.Error += "; message stream interrupted before all events were delivered"
+			}
+			if r.Status == "failed" {
+				if hint := diagnostics.hint(); hint != "" {
+					r.Error += "; " + hint
+				}
+			}
 			r.Output, _ = output.result()
 			r.DurationMs = time.Since(started).Milliseconds()
 			close(messages)
@@ -187,6 +240,11 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 		}()
 		fail := func(stage string, e error) {
 			r.Error = "deepagents: " + stage + " failed"
+			if errors.Is(context.Cause(runCtx), errDeepAgentsMessageStall) {
+				r.Status = "failed"
+				r.Error = errDeepAgentsMessageStall.Error()
+				return
+			}
 			if errors.Is(e, context.DeadlineExceeded) || errors.Is(runCtx.Err(), context.DeadlineExceeded) {
 				r.Status = "timeout"
 			} else if errors.Is(e, context.Canceled) || errors.Is(runCtx.Err(), context.Canceled) {
@@ -199,7 +257,7 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 		}
 		setupCtx, stopSetup := context.WithTimeout(runCtx, handshake)
 		defer stopSetup()
-		init, e := c.request(setupCtx, "initialize", map[string]any{"protocolVersion": 1, "clientCapabilities": map[string]any{}, "clientInfo": map[string]string{"name": "multica", "version": "1"}})
+		init, e := request(setupCtx, "initialize", map[string]any{"protocolVersion": 1, "clientCapabilities": map[string]any{}, "clientInfo": map[string]string{"name": "multica", "version": "1"}})
 		if e != nil {
 			fail("initialize", e)
 			return
@@ -224,7 +282,7 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 			method = "session/load"
 			params["sessionId"] = opts.ResumeSessionID
 		}
-		session, e := c.request(setupCtx, method, params)
+		session, e := request(setupCtx, method, params)
 		if e != nil {
 			fail(method, e)
 			r.ResumeRejected = deepAgentsMissingSession(e, opts.ResumeSessionID)
@@ -256,7 +314,7 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 				if option.Category == "model" {
 					found = true
 					if option.Value != opts.Model {
-						_, e = c.request(setupCtx, "session/set_config_option", map[string]any{"sessionId": id, "configId": option.ID, "value": opts.Model})
+						_, e = request(setupCtx, "session/set_config_option", map[string]any{"sessionId": id, "configId": option.ID, "value": opts.Model})
 						if e != nil {
 							fail("model selection", e)
 							return
@@ -285,7 +343,9 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 		promptCtx, stopPrompt := context.WithCancel(context.Background())
 		defer stopPrompt()
 		done := make(chan rpcResult, 1)
+		rpcWorkers.Add(1)
 		go func() {
+			defer rpcWorkers.Done()
 			value, e := c.request(promptCtx, "session/prompt", map[string]any{"sessionId": id, "prompt": []any{map[string]any{"type": "text", "text": prompt}}})
 			done <- rpcResult{result: value, err: e}
 		}()
@@ -294,22 +354,24 @@ func (b *deepagentsBackend) Execute(ctx context.Context, prompt string, opts Exe
 		case reply = <-done:
 		case <-readerDone:
 			stopPrompt()
-			<-done
 			fail("ACP transport closed", io.EOF)
 			return
 		case <-runCtx.Done():
-			data, _ := json.Marshal(map[string]any{"jsonrpc": "2.0", "method": "session/cancel", "params": map[string]any{"sessionId": id}})
-			_ = c.writeLine(append(data, '\n'))
 			grace := opts.TurnInterruptTimeout
 			if grace <= 0 {
 				grace = 2 * time.Second
 			}
 			timer := time.NewTimer(grace)
+			data, _ := json.Marshal(map[string]any{"jsonrpc": "2.0", "method": "session/cancel", "params": map[string]any{"sessionId": id}})
+			rpcWorkers.Add(1)
+			go func() {
+				defer rpcWorkers.Done()
+				_ = c.writeLine(append(data, '\n'))
+			}()
 			select {
 			case <-done:
 			case <-timer.C:
 				stopPrompt()
-				<-done
 			}
 			timer.Stop()
 			fail("cancelled", runCtx.Err())
@@ -350,4 +412,44 @@ func deepAgentsMissingSession(err error, requested string) bool {
 		URI string `json:"uri"`
 	}
 	return json.Unmarshal([]byte(rpc.Data), &data) == nil && requested != "" && data.URI == requested
+}
+
+// Keep only bounded diagnostic recognition state. Never forward raw stderr,
+// provider strings or arbitrary exception messages to logs or task results.
+type deepAgentsDiagnostics struct {
+	mu                 sync.Mutex
+	tail               string
+	missingCredentials bool
+	missingDependency  bool
+}
+
+func (d *deepAgentsDiagnostics) Write(p []byte) (int, error) {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	n := len(p)
+	if len(p) > 4096 {
+		p = p[len(p)-4096:]
+	}
+	d.tail += string(p)
+	if strings.Contains(d.tail, "No credentials configured") {
+		d.missingCredentials = true
+	}
+	if strings.Contains(d.tail, "ModuleNotFoundError") || strings.Contains(d.tail, "ImportError") {
+		d.missingDependency = true
+	}
+	if len(d.tail) > 4096 {
+		d.tail = d.tail[len(d.tail)-4096:]
+	}
+	return n, nil
+}
+func (d *deepAgentsDiagnostics) hint() string {
+	d.mu.Lock()
+	defer d.mu.Unlock()
+	if d.missingCredentials {
+		return "configure provider credentials in the agent environment and select a model"
+	}
+	if d.missingDependency {
+		return "install the documented deepagents-code and deepagents-acp versions in this runtime's virtual environment"
+	}
+	return ""
 }

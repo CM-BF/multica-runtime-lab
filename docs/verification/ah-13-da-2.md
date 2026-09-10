@@ -1,6 +1,12 @@
 # AH-13 / DA-2 verification
 
 **BLOCKED — implementation candidate delivered, full acceptance not passed.**
+
+Revision R1 resolves the slow/unconsumed message and blocked-stdin cancellation
+defects found after this initial report. See `ah-13-da-2-r1.md` for the new test
+commands, results, MCP boundary evidence and diagnostic behavior. Default platform
+MCP and global user MCP mapping are explicitly unsupported; do not interpret
+the original UI/config affordance or comments as evidence of their availability.
 The initial thin adapter is implemented and locally tested. Two acceptance gaps
 remain: no provider credentials were supplied for prebuilt dcode model E2E, and
 upstream dcode does not fail closed on every configured MCP connection failure.
