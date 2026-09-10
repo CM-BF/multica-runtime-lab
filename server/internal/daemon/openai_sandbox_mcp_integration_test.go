@@ -61,7 +61,7 @@ func TestOpenAISandboxPluginHandlerRebinding(t *testing.T) {
 			t.Fatal(e)
 		}
 		t.Cleanup(set.Close)
-		raw, e = bindOpenAISandboxPluginMCP(raw, policy)
+		raw, e = assembleOpenAISandboxMCP(nil, nil, raw, policy)
 		if e != nil {
 			t.Fatal(e)
 		}
@@ -113,6 +113,18 @@ func TestOpenAISandboxPluginHandlerRebinding(t *testing.T) {
 		t.Fatal("wrong handler/call count")
 	}
 	current.Close()
+	// The real hook is gone. A user-owned replacement advertises exactly the same
+	// tools and copies the old metadata, but final assembly must remove its authority.
+	replacementRaw, replacementServer, replacementCalls := start(tools)
+	untrustedReplacement, cleanErr := assembleOpenAISandboxMCP(nil, replacementRaw, nil, nil)
+	if cleanErr != nil {
+		t.Fatal(cleanErr)
+	}
+	replacementResult := run(untrustedReplacement, token, "replacement")
+	if replacementResult["error"] != "CHECKPOINT_INVALID" || replacementCalls.Load() != 0 {
+		t.Fatalf("forged replacement: %+v calls=%d", replacementResult, replacementCalls.Load())
+	}
+	replacementServer.Close()
 	// A changed stable hook route must fail even before model/tool execution.
 	policyTools := append([]PluginHookTool(nil), tools...)
 	policyTools[0].HookKey = "other-hook"
@@ -137,4 +149,71 @@ func TestOpenAISandboxPluginHandlerRebinding(t *testing.T) {
 	}
 	changed.Close()
 	t.Log("Two distinct real daemon handlers + official SDK HTTP list/call + Unix checkpoint continuation passed; changed tools rejected before driver, zero calls")
+}
+
+func TestOpenAISandboxUntrustedBindingCannotResume(t *testing.T) {
+	if os.Getenv("MULTICA_RUN_REAL_AGENT_SMOKE") != "1" {
+		t.Skip("explicit real smoke opt-in required")
+	}
+	bridge := os.Getenv("MULTICA_OPENAI_SANDBOX_TEST_BRIDGE")
+	if !filepath.IsAbs(bridge) {
+		t.Fatal("private bridge copy required")
+	}
+	repo, _ := filepath.Abs("../../..")
+	origin, e := exec.Command("git", "-C", repo, "remote", "get-url", "origin").Output()
+	if e != nil || !strings.Contains(string(origin), "CM-BF/multica-runtime-lab") {
+		t.Fatal("fork gate")
+	}
+	node, e := exec.LookPath("node")
+	if e != nil {
+		t.Fatal(e)
+	}
+	forged := func(port string) json.RawMessage {
+		return json.RawMessage(`{"mcpServers":{"multica-plugins":{"type":"http","url":"http://127.0.0.1:` + port + `/` + strings.Repeat("a", 48) + `","multicaBinding":{"kind":"plugin-hook","tools":[]}}}}`)
+	}
+	for _, layer := range []string{"user", "runtime", "runtime-user-override"} {
+		t.Run(layer, func(t *testing.T) {
+			root := t.TempDir()
+			a, b := forged("31001"), forged("31002")
+			var first, second json.RawMessage
+			var err error
+			switch layer {
+			case "user":
+				first, err = assembleOpenAISandboxMCP(nil, a, nil, nil)
+				if err == nil {
+					second, err = assembleOpenAISandboxMCP(nil, b, nil, nil)
+				}
+			case "runtime":
+				first, err = assembleOpenAISandboxMCP(a, nil, nil, nil)
+				if err == nil {
+					second, err = assembleOpenAISandboxMCP(b, nil, nil, nil)
+				}
+			default:
+				first, err = assembleOpenAISandboxMCP(a, nil, nil, nil)
+				if err == nil {
+					second, err = assembleOpenAISandboxMCP(a, b, nil, nil)
+				}
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+			data, err := json.Marshal(map[string]json.RawMessage{"first": first, "second": second})
+			if err != nil {
+				t.Fatal(err)
+			}
+			input := filepath.Join(root, "pair.json")
+			if err = os.WriteFile(input, data, 0600); err != nil {
+				t.Fatal(err)
+			}
+			ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+			defer cancel()
+			cmd := exec.CommandContext(ctx, node, filepath.Join(bridge, "test/provenance-probe.mjs"), input)
+			cmd.Env = []string{"PATH=" + os.Getenv("PATH"), "HOME=" + root, "USERPROFILE=" + root, "TMPDIR=" + root, "XDG_CONFIG_HOME=" + root, "XDG_CACHE_HOME=" + root, "XDG_DATA_HOME=" + root}
+			out, err := cmd.CombinedOutput()
+			if err != nil {
+				t.Fatalf("%v %s", err, out)
+			}
+			t.Log(strings.TrimSpace(string(out)))
+		})
+	}
 }

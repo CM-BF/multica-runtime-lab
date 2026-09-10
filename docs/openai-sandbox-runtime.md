@@ -1,8 +1,8 @@
 # OpenAI Sandbox runtime
 
-Status: OA-4 / OA-2-R1 candidate, awaiting independent review. The complete
+Status: OA-6 / OA-2-R2 candidate, awaiting independent review. The complete
 bridge suite and two-turn daemon plugin handler integration pass; model E2E is
-blocked without explicit credentials. See `docs/verification/ah-13-oa-4.md`.
+blocked without explicit credentials. See `docs/verification/ah-13-oa-6.md`.
 
 The `openai-sandbox` family runs this fork's `multica-openai-sandbox` entry. It
 wraps official `@openai/agents` **0.17.2**, `Runner.run`, `SandboxAgent` and
@@ -83,6 +83,17 @@ No account MCP configuration is imported. Remote broker provider gating has
 **not** been enabled. Real local stdio and two successive daemon plugin HTTP
 handler list/call round trips are tested without a model; full remote broker and
 credentialed model end-to-end acceptance remain unproven.
+
+Ordinary agent/runtime MCP configuration cannot supply `multicaBinding`: the
+daemon strips this reserved entry field before the ordinary merge, including
+its error fallback, and again at final assembly. Runtime is the base, user wins
+ordinary collisions, and only the current `startTaskPluginHookMCP` output is
+bound and applied last. When no real hook exists, no entry receives a binding;
+a same-name user replacement cannot retain the prior clean session identity.
+This is a daemon input-source boundary, not cryptographic authentication of
+arbitrary direct calls to the internal bridge/Store or protection against a
+malicious process with the same host account. Direct integrations must enforce
+the same source separation before supplying internal protocol metadata.
 
 For OA only, the daemon attaches stable plugin installation ID, hook key, tool
 name/description/schema policy to `multica-plugins`. A bound HTTP endpoint must

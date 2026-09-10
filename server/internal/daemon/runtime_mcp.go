@@ -38,6 +38,10 @@ type runtimeLocalMcpServerSummary struct {
 // task-local config so adding one managed server no longer disables unrelated
 // runtime servers.
 func mergeRuntimeAndAgentMcpConfig(provider string, agentConfig json.RawMessage) (json.RawMessage, error) {
+	// OA has no ambient runtime import. Its ordinary config cannot carry daemon metadata.
+	if provider == "openai-sandbox" {
+		return stripOpenAISandboxBindings(agentConfig)
+	}
 	trimmed := bytes.TrimSpace(agentConfig)
 	if len(trimmed) == 0 || bytes.Equal(trimmed, []byte("null")) {
 		return agentConfig, nil

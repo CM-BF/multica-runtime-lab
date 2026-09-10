@@ -1,0 +1,654 @@
+=== RUN   TestDeepAgentsWireAndPrivateMCP
+2026/09/10 02:57:09 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsWireAndPrivateMCP1129571273/001/fake dcode" args="[--acp --model <redacted> --mcp-config <redacted>]" arg_count=5
+--- PASS: TestDeepAgentsWireAndPrivateMCP (0.16s)
+=== RUN   TestDeepAgentsTerminalMatrix
+=== RUN   TestDeepAgentsTerminalMatrix/max_tokens
+2026/09/10 02:57:09 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsTerminalMatrixmax_tokens2453838421/001/fake dcode" args=[--acp] arg_count=1
+=== RUN   TestDeepAgentsTerminalMatrix/max_turn_requests
+2026/09/10 02:57:10 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsTerminalMatrixmax_turn_requests3132999347/001/fake dcode" args=[--acp] arg_count=1
+=== RUN   TestDeepAgentsTerminalMatrix/refusal
+2026/09/10 02:57:10 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsTerminalMatrixrefusal680424034/001/fake dcode" args=[--acp] arg_count=1
+=== RUN   TestDeepAgentsTerminalMatrix/unknown
+2026/09/10 02:57:10 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsTerminalMatrixunknown1734927546/001/fake dcode" args=[--acp] arg_count=1
+=== RUN   TestDeepAgentsTerminalMatrix/no-stop
+2026/09/10 02:57:10 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsTerminalMatrixno-stop823534493/001/fake dcode" args=[--acp] arg_count=1
+=== RUN   TestDeepAgentsTerminalMatrix/cancelled
+2026/09/10 02:57:10 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsTerminalMatrixcancelled2646174331/001/fake dcode" args=[--acp] arg_count=1
+=== RUN   TestDeepAgentsTerminalMatrix/eof
+2026/09/10 02:57:10 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsTerminalMatrixeof2429605878/001/fake dcode" args=[--acp] arg_count=1
+=== RUN   TestDeepAgentsTerminalMatrix/malformed
+2026/09/10 02:57:11 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsTerminalMatrixmalformed1768471854/001/fake dcode" args=[--acp] arg_count=1
+=== RUN   TestDeepAgentsTerminalMatrix/version
+2026/09/10 02:57:11 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsTerminalMatrixversion1940737225/001/fake dcode" args=[--acp] arg_count=1
+=== RUN   TestDeepAgentsTerminalMatrix/no-id
+2026/09/10 02:57:11 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsTerminalMatrixno-id2504437720/001/fake dcode" args=[--acp] arg_count=1
+--- PASS: TestDeepAgentsTerminalMatrix (1.73s)
+    --- PASS: TestDeepAgentsTerminalMatrix/max_tokens (0.16s)
+    --- PASS: TestDeepAgentsTerminalMatrix/max_turn_requests (0.17s)
+    --- PASS: TestDeepAgentsTerminalMatrix/refusal (0.18s)
+    --- PASS: TestDeepAgentsTerminalMatrix/unknown (0.22s)
+    --- PASS: TestDeepAgentsTerminalMatrix/no-stop (0.16s)
+    --- PASS: TestDeepAgentsTerminalMatrix/cancelled (0.16s)
+    --- PASS: TestDeepAgentsTerminalMatrix/eof (0.24s)
+    --- PASS: TestDeepAgentsTerminalMatrix/malformed (0.14s)
+    --- PASS: TestDeepAgentsTerminalMatrix/version (0.15s)
+    --- PASS: TestDeepAgentsTerminalMatrix/no-id (0.14s)
+=== RUN   TestDeepAgentsLoadAndReplay
+=== RUN   TestDeepAgentsLoadAndReplay/ok
+2026/09/10 02:57:11 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsLoadAndReplayok4293705375/001/fake dcode" args="[--acp --model <redacted>]" arg_count=3
+=== RUN   TestDeepAgentsLoadAndReplay/no-load
+2026/09/10 02:57:11 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsLoadAndReplayno-load1034154447/001/fake dcode" args="[--acp --model <redacted>]" arg_count=3
+=== RUN   TestDeepAgentsLoadAndReplay/missing
+2026/09/10 02:57:11 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsLoadAndReplaymissing1650041608/001/fake dcode" args="[--acp --model <redacted>]" arg_count=3
+=== RUN   TestDeepAgentsLoadAndReplay/db
+2026/09/10 02:57:12 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsLoadAndReplaydb85752248/001/fake dcode" args="[--acp --model <redacted>]" arg_count=3
+--- PASS: TestDeepAgentsLoadAndReplay (0.58s)
+    --- PASS: TestDeepAgentsLoadAndReplay/ok (0.16s)
+    --- PASS: TestDeepAgentsLoadAndReplay/no-load (0.14s)
+    --- PASS: TestDeepAgentsLoadAndReplay/missing (0.14s)
+    --- PASS: TestDeepAgentsLoadAndReplay/db (0.13s)
+=== RUN   TestDeepAgentsCancel
+=== RUN   TestDeepAgentsCancel/cancel
+2026/09/10 02:57:12 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsCancelcancel82105310/001/fake dcode" args=[--acp] arg_count=1
+=== RUN   TestDeepAgentsCancel/stubborn
+2026/09/10 02:57:12 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsCancelstubborn3734209596/001/fake dcode" args=[--acp] arg_count=1
+--- PASS: TestDeepAgentsCancel (0.31s)
+    --- PASS: TestDeepAgentsCancel/cancel (0.14s)
+    --- PASS: TestDeepAgentsCancel/stubborn (0.18s)
+=== RUN   TestDeepAgentsRejectArgumentsAndMCP
+--- PASS: TestDeepAgentsRejectArgumentsAndMCP (0.00s)
+=== RUN   TestDeepAgentsFamilyWhitelist
+--- PASS: TestDeepAgentsFamilyWhitelist (0.00s)
+=== RUN   TestDeepAgentsToolsAndFinalAnswer
+2026/09/10 02:57:12 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsToolsAndFinalAnswer459860112/001/fake dcode" args=[--acp] arg_count=1
+--- PASS: TestDeepAgentsToolsAndFinalAnswer (0.16s)
+=== RUN   TestDeepAgentsSlowConsumerLossless
+2026/09/10 02:57:12 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsSlowConsumerLossless4291561293/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:389: delivered 401 text chunks, 400 tool starts, 400 tool completions; result=completed
+--- PASS: TestDeepAgentsSlowConsumerLossless (1.68s)
+=== RUN   TestDeepAgentsUnconsumedMessages
+=== RUN   TestDeepAgentsUnconsumedMessages/false
+2026/09/10 02:57:14 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsUnconsumedMessagesfalse2609862756/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:424: no consumer: failed, "deepagents: message consumer stalled; consume Session.Messages to receive all events; message stream interrupted before all events were delivered"; 256 queued events retained
+=== RUN   TestDeepAgentsUnconsumedMessages/true
+2026/09/10 02:57:16 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsUnconsumedMessagestrue346751748/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:424: no consumer: aborted, "deepagents: cancelled failed; message stream interrupted before all events were delivered"; 256 queued events retained
+--- PASS: TestDeepAgentsUnconsumedMessages (2.34s)
+    --- PASS: TestDeepAgentsUnconsumedMessages/false (2.16s)
+    --- PASS: TestDeepAgentsUnconsumedMessages/true (0.18s)
+=== RUN   TestDeepAgentsCancelNoReadStdin
+2026/09/10 02:57:16 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsCancelNoReadStdin2709574209/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:457: child does not read stdin; pipe has 65536 unread bytes, prompt=8 MiB
+    deepagents_test.go:488: cancel Result after 52.845791ms (budget 50ms + 2s cleanup); parent/child reaped
+--- PASS: TestDeepAgentsCancelNoReadStdin (0.20s)
+=== RUN   TestDeepAgentsSafeStartupDiagnostics
+=== RUN   TestDeepAgentsSafeStartupDiagnostics/credentials
+2026/09/10 02:57:16 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsSafeStartupDiagnosticscredentials3484125849/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:521: deepagents: BRIDGE_READY_MISSING; configure provider credentials in the agent environment and select a model
+=== RUN   TestDeepAgentsSafeStartupDiagnostics/dependency
+2026/09/10 02:57:17 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsSafeStartupDiagnosticsdependency910025358/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:521: deepagents: BRIDGE_READY_MISSING; install the documented deepagents-code and deepagents-acp versions in this runtime's virtual environment
+--- PASS: TestDeepAgentsSafeStartupDiagnostics (0.26s)
+    --- PASS: TestDeepAgentsSafeStartupDiagnostics/credentials (0.13s)
+    --- PASS: TestDeepAgentsSafeStartupDiagnostics/dependency (0.13s)
+=== RUN   TestDeepAgentsHTTPMCPPrivateConfig
+=== RUN   TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http"}
+=== RUN   TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"file:///tmp/test"}
+=== RUN   TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"http:///missing-host"}
+=== RUN   TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"http://user:secret@example.test"}
+=== RUN   TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"https://example.test","command":""}
+=== RUN   TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"https://example.test","env":{}}
+=== RUN   TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"https://example.test","args":[]}
+=== RUN   TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"https://example.test","headers":{"Authorization":42}}
+=== RUN   TestDeepAgentsHTTPMCPPrivateConfig/{"type":"sse","url":"https://example.test"}
+--- PASS: TestDeepAgentsHTTPMCPPrivateConfig (0.00s)
+    --- PASS: TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http"} (0.00s)
+    --- PASS: TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"file:///tmp/test"} (0.00s)
+    --- PASS: TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"http:///missing-host"} (0.00s)
+    --- PASS: TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"http://user:secret@example.test"} (0.00s)
+    --- PASS: TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"https://example.test","command":""} (0.00s)
+    --- PASS: TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"https://example.test","env":{}} (0.00s)
+    --- PASS: TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"https://example.test","args":[]} (0.00s)
+    --- PASS: TestDeepAgentsHTTPMCPPrivateConfig/{"type":"http","url":"https://example.test","headers":{"Authorization":42}} (0.00s)
+    --- PASS: TestDeepAgentsHTTPMCPPrivateConfig/{"type":"sse","url":"https://example.test"} (0.00s)
+=== RUN   TestDeepAgentsReadinessGatesAllRPCs
+=== RUN   TestDeepAgentsReadinessGatesAllRPCs/old-ready
+2026/09/10 02:57:17 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsReadinessGatesAllRPCsold-ready2816032163/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:581: old-ready failed deepagents: BRIDGE_READY_INVALID
+=== RUN   TestDeepAgentsReadinessGatesAllRPCs/wrong-ready
+2026/09/10 02:57:17 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsReadinessGatesAllRPCswrong-ready2734359559/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:581: wrong-ready failed deepagents: BRIDGE_READY_INVALID
+=== RUN   TestDeepAgentsReadinessGatesAllRPCs/version-ready
+2026/09/10 02:57:17 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsReadinessGatesAllRPCsversion-ready2666863026/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:581: version-ready failed deepagents: BRIDGE_READY_INVALID
+=== RUN   TestDeepAgentsReadinessGatesAllRPCs/config-ready
+2026/09/10 02:57:17 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsReadinessGatesAllRPCsconfig-ready2199571336/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:581: config-ready failed deepagents: BRIDGE_READY_INVALID
+=== RUN   TestDeepAgentsReadinessGatesAllRPCs/policy-ready
+2026/09/10 02:57:17 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsReadinessGatesAllRPCspolicy-ready2864134223/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:581: policy-ready failed deepagents: BRIDGE_READY_INVALID
+=== RUN   TestDeepAgentsReadinessGatesAllRPCs/count-ready
+2026/09/10 02:57:17 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsReadinessGatesAllRPCscount-ready3426728189/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:581: count-ready failed deepagents: BRIDGE_READY_INVALID
+=== RUN   TestDeepAgentsReadinessGatesAllRPCs/fail-ready
+2026/09/10 02:57:17 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsReadinessGatesAllRPCsfail-ready2606954599/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:581: fail-ready failed deepagents: MCP_REQUIRED_UNREADY
+=== RUN   TestDeepAgentsReadinessGatesAllRPCs/no-ready
+2026/09/10 02:57:18 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsReadinessGatesAllRPCsno-ready632156249/001/fake dcode" args=[--acp] arg_count=1
+    deepagents_test.go:581: no-ready timeout deepagents: HANDSHAKE_TIMEOUT
+--- PASS: TestDeepAgentsReadinessGatesAllRPCs (1.09s)
+    --- PASS: TestDeepAgentsReadinessGatesAllRPCs/old-ready (0.13s)
+    --- PASS: TestDeepAgentsReadinessGatesAllRPCs/wrong-ready (0.13s)
+    --- PASS: TestDeepAgentsReadinessGatesAllRPCs/version-ready (0.13s)
+    --- PASS: TestDeepAgentsReadinessGatesAllRPCs/config-ready (0.13s)
+    --- PASS: TestDeepAgentsReadinessGatesAllRPCs/policy-ready (0.13s)
+    --- PASS: TestDeepAgentsReadinessGatesAllRPCs/count-ready (0.13s)
+    --- PASS: TestDeepAgentsReadinessGatesAllRPCs/fail-ready (0.13s)
+    --- PASS: TestDeepAgentsReadinessGatesAllRPCs/no-ready (0.15s)
+=== RUN   TestDeepAgentsModelDiscoveryRequiresReady
+=== RUN   TestDeepAgentsModelDiscoveryRequiresReady/ok
+=== RUN   TestDeepAgentsModelDiscoveryRequiresReady/old-ready
+--- PASS: TestDeepAgentsModelDiscoveryRequiresReady (0.28s)
+    --- PASS: TestDeepAgentsModelDiscoveryRequiresReady/ok (0.15s)
+    --- PASS: TestDeepAgentsModelDiscoveryRequiresReady/old-ready (0.14s)
+=== RUN   TestDeepAgentsDisabledManagedPolicy
+--- PASS: TestDeepAgentsDisabledManagedPolicy (0.00s)
+=== RUN   TestDeepAgentsPoisonedHistoryStageAndRedaction
+=== RUN   TestDeepAgentsPoisonedHistoryStageAndRedaction/load-history
+2026/09/10 02:57:18 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsPoisonedHistoryStageAndRedactionload-history975428497/001/fake dcode" args=[--acp] arg_count=1
+=== RUN   TestDeepAgentsPoisonedHistoryStageAndRedaction/prompt-history
+2026/09/10 02:57:18 INFO agent command provider=deepagents exec="/Users/citrine/Projects/multica-runtime-lab/.oa2-tools/private-yu__utu6/TestDeepAgentsPoisonedHistoryStageAndRedactionprompt-history3383261466/001/fake dcode" args=[--acp] arg_count=1
+--- PASS: TestDeepAgentsPoisonedHistoryStageAndRedaction (0.27s)
+    --- PASS: TestDeepAgentsPoisonedHistoryStageAndRedaction/load-history (0.14s)
+    --- PASS: TestDeepAgentsPoisonedHistoryStageAndRedaction/prompt-history (0.13s)
+=== RUN   TestDeepAgentsGatePrivateLifecycle
+--- PASS: TestDeepAgentsGatePrivateLifecycle (0.00s)
+=== RUN   TestOpenAISandboxSlowMixedDelivery
+--- PASS: TestOpenAISandboxSlowMixedDelivery (1.53s)
+=== RUN   TestOpenAISandboxCancelBlockedStdinReapsChild
+--- PASS: TestOpenAISandboxCancelBlockedStdinReapsChild (0.08s)
+=== RUN   TestOpenAISandboxProtocolFailures
+=== RUN   TestOpenAISandboxProtocolFailures/version
+=== RUN   TestOpenAISandboxProtocolFailures/eof
+=== RUN   TestOpenAISandboxProtocolFailures/terminal-hang
+--- PASS: TestOpenAISandboxProtocolFailures (2.08s)
+    --- PASS: TestOpenAISandboxProtocolFailures/version (0.02s)
+    --- PASS: TestOpenAISandboxProtocolFailures/eof (0.02s)
+    --- PASS: TestOpenAISandboxProtocolFailures/terminal-hang (2.03s)
+=== RUN   TestOpenAISandboxUnconsumedMessagesBounded
+--- PASS: TestOpenAISandboxUnconsumedMessagesBounded (2.03s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/agent	14.963s
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic
+=== RUN   TestDeepAgentsFreshRetryOnlyMissingSession
+--- PASS: TestDeepAgentsFreshRetryOnlyMissingSession (0.00s)
+=== RUN   TestDeepAgentsDiscovery
+--- PASS: TestDeepAgentsDiscovery (0.00s)
+=== RUN   TestDeepAgentsMCPConfigurationBoundary
+    deepagents_test.go:81: explicit agent stdio config preserved byte-for-byte; nil stays nil; global runtime MCP import unsupported
+    deepagents_test.go:88: provider gate accepted; required broker correctly rejected missing credential resolver
+    deepagents_test.go:123: real multica-plugins HTTP config merged with explicit stdio and accepted by adapter validation
+--- PASS: TestDeepAgentsMCPConfigurationBoundary (0.00s)
+=== RUN   TestDeepAgentsHistoryPreflightVersusLiveLoad
+--- PASS: TestDeepAgentsHistoryPreflightVersusLiveLoad (0.00s)
+=== RUN   TestDeepAgentsPolicyFollowsWinningOverlay
+--- PASS: TestDeepAgentsPolicyFollowsWinningOverlay (0.00s)
+=== RUN   TestDeepAgentsRemoteBrokerOptionalPreparation
+--- PASS: TestDeepAgentsRemoteBrokerOptionalPreparation (0.00s)
+=== RUN   TestOpenAISandboxBindingSources
+=== RUN   TestOpenAISandboxBindingSources/runtime-forgery
+=== RUN   TestOpenAISandboxBindingSources/user-forgery
+=== RUN   TestOpenAISandboxBindingSources/user-wins-without-trust
+=== RUN   TestOpenAISandboxBindingSources/real-plugin-wins-last
+--- PASS: TestOpenAISandboxBindingSources (0.00s)
+    --- PASS: TestOpenAISandboxBindingSources/runtime-forgery (0.00s)
+    --- PASS: TestOpenAISandboxBindingSources/user-forgery (0.00s)
+    --- PASS: TestOpenAISandboxBindingSources/user-wins-without-trust (0.00s)
+    --- PASS: TestOpenAISandboxBindingSources/real-plugin-wins-last (0.00s)
+=== RUN   TestOpenAISandboxDiscovery
+--- PASS: TestOpenAISandboxDiscovery (0.00s)
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh5760_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh6066_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh6066_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh6066_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh6066_respects_the_tool_gate
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh5760_retries_fresh
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh5760_retries_fresh
+=== RUN   TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh5760_respects_the_tool_gate
+=== PAUSE TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh6066_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh6066_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh5760_respects_the_tool_gate
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh5760_retries_fresh
+=== CONT  TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh6066_retries_fresh
+--- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/hermes/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dsh/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/reasonix/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/cursor/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openclaw/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kiro/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/zeroclaw/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/dim/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/pi/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deepagents/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoder/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/opencode/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/antigravity/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/copilot/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwen/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qoderclicn/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codex/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/deveco/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codearts/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/qwenpaw/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/grok/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/openai-sandbox/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/traecli/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/codebuddy/gh6066_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh6066_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/kimi/gh5760_respects_the_tool_gate (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/mcode/gh5760_retries_fresh (0.00s)
+    --- PASS: TestShouldRetryWithFreshSession_UnresumableHistoryIsBackendAgnostic/claude/gh6066_retries_fresh (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon	0.352s
+=== RUN   TestDeepAgentsStateIsolation
+--- PASS: TestDeepAgentsStateIsolation (0.00s)
+=== RUN   TestOpenAISandboxStateIsolation
+--- PASS: TestOpenAISandboxStateIsolation (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon/execenv	0.495s
+
+EXIT_CODE=0

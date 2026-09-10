@@ -1,0 +1,31 @@
+
+> multica-openai-sandbox@0.1.0 test
+> node --test test/*.test.mjs
+
+✔ real Unix sandbox: cross-process archive recovery and artifact create/modify/delete; simulated model (2442.491ms)
+✔ real SDK explicit MCP stdio list/call round trip (70.516084ms)
+Error initializing MCP server: object
+✔ required MCP failure prevents driver/model and cleans real workspace (7.325084ms)
+✔ real Unix cancellation stops shell child and retains dirty recovery (17.120833ms)
+✔ artifact conflict and unsafe paths reject before overwrite (1.980708ms)
+✔ events retain call identity and errors never echo raw credentials (0.193666ms)
+✔ disabled stdio and HTTP cause zero child starts and zero connections (6.611292ms)
+✔ stable binding permits only bounded transport/credential rotation; substantive policy remains bound (8.918209ms)
+✔ artifact file-to-directory rejects before unrelated export writes (6.7195ms)
+✔ artifact directory-to-file rejects before unrelated export writes (3.6415ms)
+✔ artifact empty-directory-to-file rejects before unrelated export writes (2.952791ms)
+ℹ tests 11
+ℹ suites 0
+ℹ pass 11
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2998.591167
+npm notice
+npm notice New major version of npm available! 10.9.2 -> 12.0.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.0.2
+npm notice To update run: npm install -g npm@12.0.2
+npm notice
+
+EXIT_CODE=0

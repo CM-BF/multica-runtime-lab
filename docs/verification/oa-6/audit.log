@@ -1,0 +1,11 @@
+$ git remote get-url origin
+https://github.com/CM-BF/multica-runtime-lab.git
+EXIT_CODE=0
+$ git rev-parse HEAD
+f820e342c98cda7507474c5aece634ccd752fe3c
+EXIT_CODE=0
+$ git diff --check
+EXIT_CODE=0
+$ git diff --name-only -- runtime-bridges/deepagents server/pkg/agent/deepagents.go server/internal/daemon/remote_mcp_broker.go
+EXIT_CODE=0
+Private source/test copy equals candidate: PASS

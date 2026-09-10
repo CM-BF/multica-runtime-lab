@@ -1,0 +1,25 @@
+=== RUN   TestOpenAISandboxRealEntryNoCredentials
+    openai_sandbox_integration_test.go:58: real SDK entry: status=failed error=openai-sandbox: MODEL_CREDENTIALS
+--- PASS: TestOpenAISandboxRealEntryNoCredentials (0.24s)
+=== RUN   TestOpenAISandboxRealSDKDescendantCancellation
+--- PASS: TestOpenAISandboxRealSDKDescendantCancellation (0.30s)
+PASS
+ok  	github.com/multica-ai/multica/server/pkg/agent	0.741s
+=== RUN   TestOpenAISandboxPluginHandlerRebinding
+    openai_sandbox_mcp_integration_test.go:151: Two distinct real daemon handlers + official SDK HTTP list/call + Unix checkpoint continuation passed; changed tools rejected before driver, zero calls
+--- PASS: TestOpenAISandboxPluginHandlerRebinding (3.17s)
+=== RUN   TestOpenAISandboxUntrustedBindingCannotResume
+=== RUN   TestOpenAISandboxUntrustedBindingCannotResume/user
+    openai_sandbox_mcp_integration_test.go:216: PASS: sanitized ordinary configuration cannot preserve identity across endpoint replacement or load the prior clean checkpoint
+=== RUN   TestOpenAISandboxUntrustedBindingCannotResume/runtime
+    openai_sandbox_mcp_integration_test.go:216: PASS: sanitized ordinary configuration cannot preserve identity across endpoint replacement or load the prior clean checkpoint
+=== RUN   TestOpenAISandboxUntrustedBindingCannotResume/runtime-user-override
+    openai_sandbox_mcp_integration_test.go:216: PASS: sanitized ordinary configuration cannot preserve identity across endpoint replacement or load the prior clean checkpoint
+--- PASS: TestOpenAISandboxUntrustedBindingCannotResume (0.14s)
+    --- PASS: TestOpenAISandboxUntrustedBindingCannotResume/user (0.04s)
+    --- PASS: TestOpenAISandboxUntrustedBindingCannotResume/runtime (0.04s)
+    --- PASS: TestOpenAISandboxUntrustedBindingCannotResume/runtime-user-override (0.04s)
+PASS
+ok  	github.com/multica-ai/multica/server/internal/daemon	3.583s
+
+EXIT_CODE=0

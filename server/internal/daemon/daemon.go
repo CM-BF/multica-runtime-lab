@@ -7502,12 +7502,6 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	if pluginHookServer != nil {
 		defer pluginHookServer.Close()
 	}
-	if provider == "openai-sandbox" {
-		pluginHookConfig, pluginHookErr = bindOpenAISandboxPluginMCP(pluginHookConfig, task.PluginHookTools)
-		if pluginHookErr != nil {
-			return TaskResult{}, fmt.Errorf("bind OpenAI Sandbox plugin MCP: %w", pluginHookErr)
-		}
-	}
 	if len(pluginHookConfig) > 0 {
 		merged, mergeErr := mergeTaskRemoteMCPConfig(remoteMCPConfig, pluginHookConfig)
 		if mergeErr != nil {
@@ -7518,6 +7512,13 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 	}
 	if task.Agent != nil {
 		agentMcpConfig = task.Agent.McpConfig
+		if provider == "openai-sandbox" {
+			var cleanErr error
+			agentMcpConfig, cleanErr = stripOpenAISandboxBindings(agentMcpConfig)
+			if cleanErr != nil {
+				return TaskResult{}, fmt.Errorf("sanitize OpenAI Sandbox MCP: %w", cleanErr)
+			}
+		}
 		effectiveMcpConfig = agentMcpConfig
 		if merged, mergeErr := mergeRuntimeAndAgentMcpConfig(provider, agentMcpConfig); mergeErr != nil {
 			taskLog.Warn("mcp_config: runtime merge failed; using agent configuration only",
@@ -7536,6 +7537,13 @@ func (d *Daemon) runTask(ctx context.Context, task Task, provider string, slot i
 		}
 		if provider == "cursor" {
 			cursorMcpAuthSource = strings.TrimSpace(task.Agent.CustomEnv[execenv.CursorMcpAuthSourceEnv])
+		}
+	}
+	if provider == "openai-sandbox" {
+		var bindingErr error
+		effectiveMcpConfig, bindingErr = assembleOpenAISandboxMCP(effectiveMcpConfig, nil, pluginHookConfig, task.PluginHookTools)
+		if bindingErr != nil {
+			return TaskResult{}, fmt.Errorf("assemble OpenAI Sandbox MCP: %w", bindingErr)
 		}
 	}
 	// Decode openclaw-specific runtime_config knobs once so reuse / prepare /
