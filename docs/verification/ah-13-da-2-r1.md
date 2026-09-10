@@ -2,8 +2,9 @@
 
 **PASS for the two requested blocking fixes and their regression tests. Overall
 DA-2 remains BLOCKED for the previously recorded MCP readiness/model E2E gaps.**
-Default platform MCP/global user MCP mapping is explicitly unsupported; the
-negative production-path evidence below replaces any implied support in comments.
+Historical R1 boundary: platform MCP/global user MCP mapping was unsupported.
+R2 (`ah-13-da-2-r2.md`) supersedes plugin hook rejection with verified HTTP support;
+remote brokers and global user import remain unsupported.
 
 Base: `7d6ef1d5af21fc7777083d5937cb55a11524054e`. Same exclusive checkout and branch
 `feat/ah-13-da-2-deepagents`, origin `CM-BF/multica-runtime-lab`. No delegation,

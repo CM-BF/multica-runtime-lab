@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -38,7 +39,7 @@ func validateDeepAgentsArgs(args []string) error {
 	return nil
 }
 
-// Only explicit stdio entries are supported until remote transports are tested.
+// Preserve canonical dcode stdio and streamable-HTTP entries in a private file.
 func prepareDeepAgentsMCP(raw json.RawMessage) (string, func(), error) {
 	noop := func() {}
 	if len(raw) == 0 || strings.TrimSpace(string(raw)) == "null" {
@@ -57,9 +58,26 @@ func prepareDeepAgentsMCP(raw json.RawMessage) (string, func(), error) {
 			URL     string            `json:"url"`
 			Args    []string          `json:"args"`
 			Env     map[string]string `json:"env"`
+			Headers map[string]string `json:"headers"`
 		}
-		if json.Unmarshal(entry, &s) != nil || strings.TrimSpace(s.Command) == "" || s.URL != "" || (s.Type != "" && s.Type != "stdio") {
-			return "", noop, errors.New("deepagents: invalid or unsupported MCP entry; explicit stdio command required")
+		invalid := json.Unmarshal(entry, &s) != nil
+		var fields map[string]json.RawMessage
+		_ = json.Unmarshal(entry, &fields)
+		switch s.Type {
+		case "", "stdio":
+			invalid = invalid || strings.TrimSpace(s.Command) == "" || fields["url"] != nil
+		case "http":
+			u, err := url.Parse(s.URL)
+			invalid = invalid || err != nil || u == nil
+			if u != nil {
+				invalid = invalid || (u.Scheme != "http" && u.Scheme != "https") || u.Hostname() == "" || u.User != nil || u.Fragment != ""
+			}
+			invalid = invalid || fields["command"] != nil || fields["args"] != nil || fields["env"] != nil
+		default:
+			invalid = true
+		}
+		if invalid {
+			return "", noop, errors.New("deepagents: invalid MCP entry; explicit stdio command or type:http URL required")
 		}
 	}
 	if len(config.Servers) == 0 {

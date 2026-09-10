@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"github.com/multica-ai/multica/server/pkg/agent"
 	"github.com/multica-ai/multica/server/pkg/remotemcp"
 	"os"
@@ -106,10 +107,10 @@ func TestDeepAgentsMCPConfigurationBoundary(t *testing.T) {
 		t.Fatal(err)
 	}
 	_, err = backend.Execute(ctx, "test", agent.ExecOptions{Cwd: home, McpConfig: merged})
-	if err == nil || !strings.Contains(err.Error(), "explicit stdio command required") {
-		t.Fatalf("expected pre-launch rejection of real plugin HTTP config: %v", err)
+	if !errors.Is(err, os.ErrNotExist) {
+		t.Fatalf("expected executable lookup after accepting real plugin HTTP config: %v", err)
 	}
 	cancel()
 	set.Close()
-	t.Log("real multica-plugins HTTP config merged with explicit stdio then rejected before process startup; platform plugin MCP unsupported")
+	t.Log("real multica-plugins HTTP config merged with explicit stdio and accepted by adapter validation")
 }

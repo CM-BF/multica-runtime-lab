@@ -45,26 +45,32 @@ ACP initialization with a missing-credentials error; Multica reports a failed
 initialize stage with a fixed, actionable credential/dependency hint when recognized.
 Raw provider stderr is never copied into task output.
 
-Managed MCP currently accepts only canonical explicit stdio entries:
+Managed MCP accepts canonical explicit stdio and `type:"http"` streamable-HTTP entries:
 
 ```json
 {"mcpServers":{"local":{"command":"/absolute/path/to/mcp-server","args":[]}}}
 ```
 
-The adapter consumes only `ExecOptions.McpConfig`; **default platform MCP and
-global user MCP discovery are unsupported**. The daemon preserves an explicit
-agent stdio config, but does not synthesize a default MCP config for Deep Agents.
-Its required Remote MCP broker provider gate rejects this family. The actual
-`multica-plugins` config generator produces HTTP, which this adapter rejects
-before launch. The negative boundary test is
-`TestDeepAgentsMCPConfigurationBoundary`; it does not claim platform MCP works.
-A prepared AGENTS/CLI brief is a different mechanism and is not MCP verification.
+The adapter consumes `ExecOptions.McpConfig`. The daemon merges generated
+`multica-plugins` streamable-HTTP configuration into that input; plugin hook tools
+are supported. `TestDeepAgentsRealPluginMCP` verifies the production generator,
+private adapter config, installed dcode loader `tools/list`, and `tools/call`
+through the daemon handler in an isolated environment without model credentials.
+This loader test uses a test ACP harness, not a dcode model turn.
+
+Remote MCP brokers remain unsupported: their provider gate excludes Deep Agents,
+so their credential resolution, broker startup and provider-specific filtering
+contracts are not enabled. `TestDeepAgentsMCPConfigurationBoundary` exercises
+that rejection separately from plugin hook acceptance. Global user MCP import
+into the daemon inventory also remains unsupported. Explicit agent stdio and
+HTTP configuration is preserved. A prepared AGENTS/CLI brief is not MCP evidence.
 
 Each execution validates the object, writes it in a private directory (0700) as
 a 0600 file, and adds `--mcp-config`. New and loaded ACP sessions receive an empty
 `mcpServers` array because dcode loads the explicit file at startup. The file is
-removed after process cleanup. HTTP/SSE entries are rejected; they are not yet
-validated. The daemon does not import global Deep Agents MCP configuration into
+removed after process cleanup. HTTP requires an explicit `type:"http"`, an
+HTTP(S) URL without embedded credentials, and optional string-valued headers.
+SSE and mixed command/HTTP entries are rejected. The daemon does not import global Deep Agents MCP configuration into
 its inventory. dcode itself may merge project, profile or plugin configuration
 under its own trust rules; explicit config is not an isolation switch. No blanket
 project trust is added. A successful handshake does not prove every upstream MCP

@@ -502,3 +502,41 @@ func TestDeepAgentsSafeStartupDiagnostics(t *testing.T) {
 		})
 	}
 }
+
+func TestDeepAgentsHTTPMCPPrivateConfig(t *testing.T) {
+	raw := json.RawMessage(`{"mcpServers":{"plugin":{"type":"http","url":"http://127.0.0.1:12345/test","headers":{"Authorization":"test-canary"}},"local":{"command":"test-server"}}}`)
+	path, cleanup, err := prepareDeepAgentsMCP(raw)
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer cleanup()
+	content, err := os.ReadFile(path)
+	if err != nil || string(content) != string(raw) {
+		t.Fatal("configuration changed", err)
+	}
+	info, err := os.Stat(path)
+	if err != nil || info.Mode().Perm() != 0600 {
+		t.Fatal("private permissions", err)
+	}
+	cleanup()
+	if _, err = os.Stat(path); !os.IsNotExist(err) {
+		t.Fatal("private config not removed", err)
+	}
+	for _, entry := range []string{
+		`{"type":"http"}`, `{"type":"http","url":"file:///tmp/test"}`,
+		`{"type":"http","url":"http:///missing-host"}`, `{"type":"http","url":"http://user:secret@example.test"}`,
+		`{"type":"http","url":"https://example.test","command":""}`,
+		`{"type":"http","url":"https://example.test","env":{}}`,
+		`{"type":"http","url":"https://example.test","args":[]}`,
+		`{"type":"http","url":"https://example.test","headers":{"Authorization":42}}`,
+		`{"type":"sse","url":"https://example.test"}`,
+	} {
+		t.Run(entry, func(t *testing.T) {
+			_, clean, err := prepareDeepAgentsMCP(json.RawMessage(`{"mcpServers":{"test":` + entry + `}}`))
+			defer clean()
+			if err == nil {
+				t.Fatal("invalid transport accepted")
+			}
+		})
+	}
+}
