@@ -1,0 +1,29 @@
+{
+  "cmd": [
+    "/Users/citrine/Projects/multica-runtime-lab/.da2-tools/go/bin/go",
+    "-C",
+    "/tmp/da14-review-7z9_4ve1/server",
+    "test",
+    "./internal/cli",
+    "-run",
+    "^TestDA14UnknownPreservation$",
+    "-count=1",
+    "-v",
+    "-timeout=60s"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin:/usr/sbin:/sbin",
+    "GOTOOLCHAIN": "auto",
+    "GOMODCACHE": "/Users/citrine/go/pkg/mod",
+    "GOPROXY": "off",
+    "GOSUMDB": "off",
+    "HOME": "/tmp/da14-review-7z9_4ve1/HOME",
+    "XDG_CONFIG_HOME": "/tmp/da14-review-7z9_4ve1/XDG_CONFIG_HOME",
+    "XDG_DATA_HOME": "/tmp/da14-review-7z9_4ve1/XDG_DATA_HOME",
+    "XDG_CACHE_HOME": "/tmp/da14-review-7z9_4ve1/XDG_CACHE_HOME",
+    "TMPDIR": "/tmp/da14-review-7z9_4ve1/TMPDIR",
+    "GOTMPDIR": "/tmp/da14-review-7z9_4ve1/GOTMPDIR",
+    "GOPATH": "/tmp/da14-review-7z9_4ve1/GOPATH",
+    "GOCACHE": "/tmp/da14-review-7z9_4ve1/GOCACHE"
+  }
+}

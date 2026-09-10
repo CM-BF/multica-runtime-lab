@@ -1,0 +1,29 @@
+{
+  "cmd": [
+    "/Users/citrine/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+    "-C",
+    "/tmp/da14-review-huxd5269/server",
+    "test",
+    "./internal/cli",
+    "-run",
+    "^TestDA14UnknownPreservation$",
+    "-count=1",
+    "-v",
+    "-timeout=60s"
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin:/usr/sbin:/sbin",
+    "GOTOOLCHAIN": "local",
+    "GOMODCACHE": "/Users/citrine/go/pkg/mod",
+    "GOPROXY": "off",
+    "GOSUMDB": "off",
+    "HOME": "/tmp/da14-review-huxd5269/HOME",
+    "XDG_CONFIG_HOME": "/tmp/da14-review-huxd5269/XDG_CONFIG_HOME",
+    "XDG_DATA_HOME": "/tmp/da14-review-huxd5269/XDG_DATA_HOME",
+    "XDG_CACHE_HOME": "/tmp/da14-review-huxd5269/XDG_CACHE_HOME",
+    "TMPDIR": "/tmp/da14-review-huxd5269/TMPDIR",
+    "GOTMPDIR": "/tmp/da14-review-huxd5269/GOTMPDIR",
+    "GOPATH": "/tmp/da14-review-huxd5269/GOPATH",
+    "GOCACHE": "/tmp/da14-review-huxd5269/GOCACHE"
+  }
+}

@@ -252,18 +252,8 @@ func TestCLIConfig_ProfileCommandOverrides_OmittedWhenEmpty(t *testing.T) {
 	}
 }
 
-// TestCLIConfig_UnknownFieldsArePreserved verifies forward-compat: a future
-// daemon that adds, say, a `backends.codex` key should not have its data
-// destroyed when an older daemon (without knowledge of that key) reads and
-// re-saves the file. Today Go's encoding/json silently DROPS unknown fields
-// on round-trip. This test documents the gap so future maintainers know.
-//
-// Skipped today (encoding/json does not preserve unknown fields), but the
-// test is written so a future change to a preserve-unknown encoder
-// (json.RawMessage, mapstructure, etc.) will pick it up.
+// TestCLIConfig_UnknownFieldsArePreserved protects forward-compatible config saves.
 func TestCLIConfig_UnknownFieldsArePreserved(t *testing.T) {
-	t.Skip("documenting known limitation: encoding/json drops unknown fields on round-trip; future PR can switch to a preserving encoder")
-
 	tmp := t.TempDir()
 	t.Setenv("HOME", tmp)
 
@@ -468,5 +458,70 @@ func TestCLIConfig_OpenClawCLITimeout_RoundTrip(t *testing.T) {
 	// discovery instead of being pinned to an empty string.
 	if got := loaded.Backends.OpenClaw.BinaryPath; got != "" {
 		t.Errorf("BinaryPath should stay empty, got %q", got)
+	}
+}
+
+func TestCLIConfigUnknownFieldsAndKnownDeletion(t *testing.T) {
+	t.Setenv("HOME", t.TempDir())
+	var cfg CLIConfig
+	seed := `{"SERVER_URL":"https://old.invalid","token":"synthetic","future_top":{"big":9007199254740993,"list":[false,null,{"x":"y"}]},"backends":{"future":{"opaque":[1,2]},"openclaw":{"state_dir":"old","future_nested":{"n":9007199254740993}}},"profile_command_overrides":{"old":"/old"}}`
+	if err := json.Unmarshal([]byte(seed), &cfg); err != nil {
+		t.Fatal(err)
+	}
+	cfg.ServerURL = "https://new.invalid"
+	cfg.Token = ""
+	cfg.Backends.OpenClaw.StateDir = ""
+	cfg.ProfileCommandOverrides = nil
+	if err := SaveCLIConfig(cfg); err != nil {
+		t.Fatal(err)
+	}
+	cfg, err := LoadCLIConfig()
+	if err != nil {
+		t.Fatal(err)
+	}
+	raw, err := json.Marshal(cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got map[string]json.RawMessage
+	if err = json.Unmarshal(raw, &got); err != nil {
+		t.Fatal(err)
+	}
+	if string(got["server_url"]) != `"https://new.invalid"` || got["SERVER_URL"] != nil || got["token"] != nil || got["profile_command_overrides"] != nil {
+		t.Fatal("known updates/deletions lost", string(raw))
+	}
+	if string(got["future_top"]) != `{"big":9007199254740993,"list":[false,null,{"x":"y"}]}` {
+		t.Fatal("unknown top changed", string(raw))
+	}
+	var backends map[string]json.RawMessage
+	if err = json.Unmarshal(got["backends"], &backends); err != nil {
+		t.Fatal(err)
+	}
+	if string(backends["future"]) != `{"opaque":[1,2]}` || string(backends["openclaw"]) != `{"future_nested":{"n":9007199254740993}}` {
+		t.Fatal("nested preservation/deletion", string(raw))
+	}
+	cfg.Backends.OpenClaw = nil
+	raw, err = json.Marshal(cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(raw), "future_nested") || !strings.Contains(string(raw), "opaque") {
+		t.Fatal("backend deletion resurrected data", string(raw))
+	}
+	cfg.Backends = nil
+	raw, err = json.Marshal(cfg)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(raw), "backends") {
+		t.Fatal("backends deletion resurrected data", string(raw))
+	}
+	// Reusing a decode target must not retain unknown fields from a previous load.
+	if err = json.Unmarshal([]byte(`{"server_url":"fresh"}`), &cfg); err != nil {
+		t.Fatal(err)
+	}
+	raw, err = json.Marshal(cfg)
+	if err != nil || string(raw) != `{"server_url":"fresh"}` {
+		t.Fatal("stale fields", string(raw), err)
 	}
 }

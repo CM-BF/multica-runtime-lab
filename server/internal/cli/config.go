@@ -21,6 +21,8 @@ const (
 
 // CLIConfig holds persistent CLI settings.
 type CLIConfig struct {
+	unknownFields map[string]json.RawMessage
+
 	ServerURL   string `json:"server_url,omitempty"`
 	AppURL      string `json:"app_url,omitempty"`
 	WorkspaceID string `json:"workspace_id,omitempty"`
@@ -168,10 +170,10 @@ type CLIConfig struct {
 // BackendOverrides holds per-backend configuration overrides. Each field is
 // optional; nil means "no override for this backend". Keep new fields additive
 // and tagged with `json:",omitempty"` so empty values do not change the saved
-// config shape. Unknown-key preservation is a separate forward-compat concern:
-// Go's encoding/json drops fields that are not represented in this struct on
-// load/save round-trip (see TestCLIConfig_UnknownFieldsArePreserved).
+// config shape. Custom JSON encoding preserves unknown keys across load/save.
 type BackendOverrides struct {
+	unknownFields map[string]json.RawMessage
+
 	OpenClaw *OpenClawOverride `json:"openclaw,omitempty"`
 }
 
@@ -205,6 +207,8 @@ type BackendOverrides struct {
 // for GUI-launched daemons. With this field, those workarounds become
 // unnecessary.
 type OpenClawOverride struct {
+	unknownFields map[string]json.RawMessage
+
 	BinaryPath string `json:"binary_path,omitempty"`
 	StateDir   string `json:"state_dir,omitempty"`
 	// CLITimeout raises (or lowers) the per-invocation deadline the daemon

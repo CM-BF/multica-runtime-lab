@@ -1,0 +1,13 @@
+=== RUN   TestDA14UnknownPreservation
+    da14_review_test.go:11: synthetic saved config: {
+          "server_url": "https://synthetic.invalid",
+          "backends": {},
+          "profile_command_overrides": {
+            "deepagents": "/synthetic/dcode"
+          }
+        }
+    da14_review_test.go:12: unknown key lost: future_top
+--- FAIL: TestDA14UnknownPreservation (0.00s)
+FAIL
+FAIL	github.com/multica-ai/multica/server/internal/cli	0.176s
+FAIL

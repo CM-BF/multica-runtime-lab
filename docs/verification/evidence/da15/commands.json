@@ -1,0 +1,63 @@
+{
+  "commands": [
+    [
+      "version",
+      [
+        "/Users/citrine/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "version"
+      ]
+    ],
+    [
+      "config",
+      [
+        "/Users/citrine/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "test",
+        "-race",
+        "./internal/cli",
+        "-count=1",
+        "-v",
+        "-timeout=120s"
+      ]
+    ],
+    [
+      "paths",
+      [
+        "/Users/citrine/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "test",
+        "-race",
+        "./cmd/multica",
+        "-run",
+        "RuntimeProfile|ConfigSet",
+        "-count=1",
+        "-v",
+        "-timeout=120s"
+      ]
+    ],
+    [
+      "vet",
+      [
+        "/Users/citrine/go/pkg/mod/golang.org/toolchain@v0.0.1-go1.26.6.darwin-arm64/bin/go",
+        "vet",
+        "./internal/cli",
+        "./cmd/multica"
+      ]
+    ]
+  ],
+  "env": {
+    "PATH": "/usr/bin:/bin:/usr/sbin:/sbin",
+    "GOTOOLCHAIN": "local",
+    "GOMODCACHE": "/Users/citrine/go/pkg/mod",
+    "GOPROXY": "off",
+    "GOSUMDB": "off",
+    "HOME": "/tmp/da15-gwkajobd/HOME",
+    "USERPROFILE": "/tmp/da15-gwkajobd/USERPROFILE",
+    "XDG_CONFIG_HOME": "/tmp/da15-gwkajobd/XDG_CONFIG_HOME",
+    "XDG_CACHE_HOME": "/tmp/da15-gwkajobd/XDG_CACHE_HOME",
+    "XDG_DATA_HOME": "/tmp/da15-gwkajobd/XDG_DATA_HOME",
+    "TMPDIR": "/tmp/da15-gwkajobd/TMPDIR",
+    "GOTMPDIR": "/tmp/da15-gwkajobd/GOTMPDIR",
+    "GOPATH": "/tmp/da15-gwkajobd/GOPATH",
+    "GOCACHE": "/tmp/da15-gwkajobd/GOCACHE"
+  },
+  "cwd": "/tmp/da15-gwkajobd/server"
+}

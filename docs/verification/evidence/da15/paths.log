@@ -1,0 +1,164 @@
+=== RUN   TestRunConfigSetPersistsValues
+Set server_url = http://example.com
+Set workspace_id = ws-123
+--- PASS: TestRunConfigSetPersistsValues (0.00s)
+=== RUN   TestRunConfigSetPersistsSupportedKeysInProfile
+--- PASS: TestRunConfigSetPersistsSupportedKeysInProfile (0.00s)
+=== RUN   TestRunConfigSetRejectsUnknownKey
+--- PASS: TestRunConfigSetRejectsUnknownKey (0.00s)
+=== RUN   TestApplyConfigSetSupportsDaemonKeys
+=== PAUSE TestApplyConfigSetSupportsDaemonKeys
+=== RUN   TestApplyConfigSetNormalizesWorkspacesRoot
+--- PASS: TestApplyConfigSetNormalizesWorkspacesRoot (0.00s)
+=== RUN   TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver
+=== RUN   TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/ws_claim_poll_interval
+=== RUN   TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/heartbeat_interval
+=== RUN   TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/codex_semantic_inactivity_timeout
+=== RUN   TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/codex_handshake_timeout
+=== RUN   TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/auto_update_check_interval
+--- PASS: TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver (0.00s)
+    --- PASS: TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/ws_claim_poll_interval (0.00s)
+    --- PASS: TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/heartbeat_interval (0.00s)
+    --- PASS: TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/codex_semantic_inactivity_timeout (0.00s)
+    --- PASS: TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/codex_handshake_timeout (0.00s)
+    --- PASS: TestApplyConfigSetPositiveDurationRoundTripsToDaemonResolver/auto_update_check_interval (0.00s)
+=== RUN   TestApplyConfigSetAgentTimeoutTriState
+=== PAUSE TestApplyConfigSetAgentTimeoutTriState
+=== RUN   TestApplyConfigSetRejectsBadValues
+=== PAUSE TestApplyConfigSetRejectsBadValues
+=== RUN   TestApplyConfigSetPollIntervalZeroDoesNotOverwrite
+=== PAUSE TestApplyConfigSetPollIntervalZeroDoesNotOverwrite
+=== RUN   TestApplyConfigSetEmptyStringClearsTypedKeys
+=== PAUSE TestApplyConfigSetEmptyStringClearsTypedKeys
+=== RUN   TestRunRuntimeProfileList
+[
+  {
+    "command_name": "company-codex",
+    "display_name": "Company Codex",
+    "enabled": true,
+    "id": "prof-1",
+    "protocol_family": "codex",
+    "visibility": "workspace"
+  }
+]
+--- PASS: TestRunRuntimeProfileList (0.00s)
+=== RUN   TestRunRuntimeProfileCreate
+{
+  "display_name": "Company Codex",
+  "id": "prof-1"
+}
+--- PASS: TestRunRuntimeProfileCreate (0.00s)
+=== RUN   TestRunRuntimeProfileCreateRejectsBadFamily
+--- PASS: TestRunRuntimeProfileCreateRejectsBadFamily (0.00s)
+=== RUN   TestRunRuntimeProfileCreateRequiresFlags
+--- PASS: TestRunRuntimeProfileCreateRequiresFlags (0.00s)
+=== RUN   TestRunRuntimeProfileUpdateOnlySendsChangedFlags
+{
+  "id": "prof-1"
+}
+--- PASS: TestRunRuntimeProfileUpdateOnlySendsChangedFlags (0.00s)
+=== RUN   TestRunRuntimeProfileUpdateNoFieldsErrors
+--- PASS: TestRunRuntimeProfileUpdateNoFieldsErrors (0.00s)
+=== RUN   TestRunRuntimeProfileDeleteSuccess
+Deleted runtime profile prof-1
+--- PASS: TestRunRuntimeProfileDeleteSuccess (0.00s)
+=== RUN   TestRunRuntimeProfileDeleteConflictSurfacesServerMessage
+--- PASS: TestRunRuntimeProfileDeleteConflictSurfacesServerMessage (0.00s)
+=== RUN   TestRunRuntimeProfileSetAndUnsetPath
+Pinned runtime profile prof-1 to /opt/bin/company-codex on this machine.
+Restart the daemon for the change to take effect.
+Removed per-machine path override for runtime profile prof-1.
+Restart the daemon for the change to take effect.
+--- PASS: TestRunRuntimeProfileSetAndUnsetPath (0.00s)
+=== RUN   TestRunRuntimeProfileSetPathRejectsRelative
+--- PASS: TestRunRuntimeProfileSetPathRejectsRelative (0.00s)
+=== RUN   TestRunRuntimeProfileSetPathPreservesExistingConfig
+Pinned runtime profile prof-1 to /opt/bin/company-codex on this machine.
+Restart the daemon for the change to take effect.
+--- PASS: TestRunRuntimeProfileSetPathPreservesExistingConfig (0.00s)
+=== RUN   TestRuntimeProfilePathMutationFailsClosedInTaskContext
+--- PASS: TestRuntimeProfilePathMutationFailsClosedInTaskContext (0.00s)
+=== RUN   TestRunRuntimeProfileSetPathPreservesUnknownConfig
+Pinned runtime profile prof-1 to /synthetic/dcode on this machine.
+Restart the daemon for the change to take effect.
+Removed per-machine path override for runtime profile prof-1.
+Restart the daemon for the change to take effect.
+--- PASS: TestRunRuntimeProfileSetPathPreservesUnknownConfig (0.00s)
+=== CONT  TestApplyConfigSetSupportsDaemonKeys
+=== CONT  TestApplyConfigSetEmptyStringClearsTypedKeys
+=== CONT  TestApplyConfigSetAgentTimeoutTriState
+--- PASS: TestApplyConfigSetEmptyStringClearsTypedKeys (0.00s)
+=== CONT  TestApplyConfigSetPollIntervalZeroDoesNotOverwrite
+=== CONT  TestApplyConfigSetRejectsBadValues
+--- PASS: TestApplyConfigSetAgentTimeoutTriState (0.00s)
+--- PASS: TestApplyConfigSetPollIntervalZeroDoesNotOverwrite (0.00s)
+=== RUN   TestApplyConfigSetRejectsBadValues/max_non-int
+=== PAUSE TestApplyConfigSetRejectsBadValues/max_non-int
+=== RUN   TestApplyConfigSetRejectsBadValues/max_negative
+=== PAUSE TestApplyConfigSetRejectsBadValues/max_negative
+=== RUN   TestApplyConfigSetRejectsBadValues/poll_bad_duration
+=== PAUSE TestApplyConfigSetRejectsBadValues/poll_bad_duration
+=== RUN   TestApplyConfigSetRejectsBadValues/poll_zero
+=== PAUSE TestApplyConfigSetRejectsBadValues/poll_zero
+--- PASS: TestApplyConfigSetSupportsDaemonKeys (0.00s)
+=== RUN   TestApplyConfigSetRejectsBadValues/poll_negative
+=== PAUSE TestApplyConfigSetRejectsBadValues/poll_negative
+=== RUN   TestApplyConfigSetRejectsBadValues/ws_claim_poll_bad_duration
+=== PAUSE TestApplyConfigSetRejectsBadValues/ws_claim_poll_bad_duration
+=== RUN   TestApplyConfigSetRejectsBadValues/ws_claim_poll_zero
+=== PAUSE TestApplyConfigSetRejectsBadValues/ws_claim_poll_zero
+=== RUN   TestApplyConfigSetRejectsBadValues/heartbeat_bad_duration
+=== PAUSE TestApplyConfigSetRejectsBadValues/heartbeat_bad_duration
+=== RUN   TestApplyConfigSetRejectsBadValues/heartbeat_zero
+=== PAUSE TestApplyConfigSetRejectsBadValues/heartbeat_zero
+=== RUN   TestApplyConfigSetRejectsBadValues/codex_semantic_zero
+=== PAUSE TestApplyConfigSetRejectsBadValues/codex_semantic_zero
+=== RUN   TestApplyConfigSetRejectsBadValues/codex_handshake_bad
+=== PAUSE TestApplyConfigSetRejectsBadValues/codex_handshake_bad
+=== RUN   TestApplyConfigSetRejectsBadValues/agent_timeout_bad_duration
+=== PAUSE TestApplyConfigSetRejectsBadValues/agent_timeout_bad_duration
+=== RUN   TestApplyConfigSetRejectsBadValues/agent_timeout_negative
+=== PAUSE TestApplyConfigSetRejectsBadValues/agent_timeout_negative
+=== RUN   TestApplyConfigSetRejectsBadValues/disable_auto_update_bad_bool
+=== PAUSE TestApplyConfigSetRejectsBadValues/disable_auto_update_bad_bool
+=== RUN   TestApplyConfigSetRejectsBadValues/auto_update_check_interval_zero
+=== PAUSE TestApplyConfigSetRejectsBadValues/auto_update_check_interval_zero
+=== RUN   TestApplyConfigSetRejectsBadValues/disable_auto_reload_bad_bool
+=== PAUSE TestApplyConfigSetRejectsBadValues/disable_auto_reload_bad_bool
+=== CONT  TestApplyConfigSetRejectsBadValues/poll_bad_duration
+=== CONT  TestApplyConfigSetRejectsBadValues/disable_auto_reload_bad_bool
+=== CONT  TestApplyConfigSetRejectsBadValues/ws_claim_poll_bad_duration
+=== CONT  TestApplyConfigSetRejectsBadValues/auto_update_check_interval_zero
+=== CONT  TestApplyConfigSetRejectsBadValues/heartbeat_bad_duration
+=== CONT  TestApplyConfigSetRejectsBadValues/max_negative
+=== CONT  TestApplyConfigSetRejectsBadValues/disable_auto_update_bad_bool
+=== CONT  TestApplyConfigSetRejectsBadValues/heartbeat_zero
+=== CONT  TestApplyConfigSetRejectsBadValues/codex_handshake_bad
+=== CONT  TestApplyConfigSetRejectsBadValues/poll_zero
+=== CONT  TestApplyConfigSetRejectsBadValues/codex_semantic_zero
+=== CONT  TestApplyConfigSetRejectsBadValues/ws_claim_poll_zero
+=== CONT  TestApplyConfigSetRejectsBadValues/poll_negative
+=== CONT  TestApplyConfigSetRejectsBadValues/agent_timeout_negative
+=== CONT  TestApplyConfigSetRejectsBadValues/max_non-int
+=== CONT  TestApplyConfigSetRejectsBadValues/agent_timeout_bad_duration
+--- PASS: TestApplyConfigSetRejectsBadValues (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/poll_bad_duration (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/disable_auto_reload_bad_bool (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/ws_claim_poll_bad_duration (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/auto_update_check_interval_zero (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/heartbeat_bad_duration (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/max_negative (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/disable_auto_update_bad_bool (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/heartbeat_zero (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/codex_handshake_bad (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/poll_zero (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/codex_semantic_zero (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/ws_claim_poll_zero (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/poll_negative (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/agent_timeout_negative (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/max_non-int (0.00s)
+    --- PASS: TestApplyConfigSetRejectsBadValues/agent_timeout_bad_duration (0.00s)
+PASS
+ok  	github.com/multica-ai/multica/server/cmd/multica	1.388s
+
+EXIT_CODE=0

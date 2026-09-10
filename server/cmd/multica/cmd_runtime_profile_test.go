@@ -1,11 +1,13 @@
 package main
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -372,5 +374,71 @@ func TestRuntimeProfilePathMutationFailsClosedInTaskContext(t *testing.T) {
 	}
 	if string(after) != string(ownerBytes) {
 		t.Fatalf("owner config content changed: got %q", after)
+	}
+}
+
+func TestRunRuntimeProfileSetPathPreservesUnknownConfig(t *testing.T) {
+	home := t.TempDir()
+	t.Setenv("HOME", home)
+	path := filepath.Join(home, ".multica", "config.json")
+	if err := os.MkdirAll(filepath.Dir(path), 0700); err != nil {
+		t.Fatal(err)
+	}
+	seed := `{"future_top":{"n":9007199254740993},"backends":{"future":{"data":[true,null]},"openclaw":{"state_dir":"/synthetic","future_field":"keep"}}}`
+	if err := os.WriteFile(path, []byte(seed), 0600); err != nil {
+		t.Fatal(err)
+	}
+	for _, unset := range []bool{false, true} {
+		var err error
+		if unset {
+			err = runRuntimeProfileUnsetPath(newProfileUnsetPathTestCmd(), []string{"prof-1"})
+		} else {
+			cmd := newProfileSetPathTestCmd()
+			if err = cmd.Flags().Set("path", "/synthetic/dcode"); err != nil {
+				t.Fatal(err)
+			}
+			err = runRuntimeProfileSetPath(cmd, []string{"prof-1"})
+		}
+		if err != nil {
+			t.Fatal(err)
+		}
+		raw, err := os.ReadFile(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		var got, want map[string]json.RawMessage
+		if err = json.Unmarshal(raw, &got); err != nil {
+			t.Fatal(err)
+		}
+		if err = json.Unmarshal([]byte(seed), &want); err != nil {
+			t.Fatal(err)
+		}
+		for key, value := range want {
+			var compact bytes.Buffer
+			if err = json.Compact(&compact, got[key]); err != nil {
+				t.Fatal(err)
+			}
+			// Object ordering is immaterial; decode without losing integer precision.
+			var a, b any
+			da := json.NewDecoder(bytes.NewReader(value))
+			da.UseNumber()
+			db := json.NewDecoder(bytes.NewReader(compact.Bytes()))
+			db.UseNumber()
+			if err = da.Decode(&a); err != nil {
+				t.Fatal(err)
+			}
+			if err = db.Decode(&b); err != nil {
+				t.Fatal(err)
+			}
+			if !reflect.DeepEqual(a, b) {
+				t.Fatalf("unset=%v field %s changed: %s", unset, key, raw)
+			}
+		}
+		if unset && got["profile_command_overrides"] != nil {
+			t.Fatal("unset retained override", string(raw))
+		}
+		if !unset && !bytes.Contains(got["profile_command_overrides"], []byte("/synthetic/dcode")) {
+			t.Fatal("missing override", string(raw))
+		}
 	}
 }
